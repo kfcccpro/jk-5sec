@@ -30,7 +30,6 @@ const defaultStore = {
 let store = loadStore();
 let role = null;
 let learningState = freshLearningState();
-
 const app = document.querySelector("#app");
 
 function loadStore() {
@@ -51,6 +50,7 @@ function freshLearningState() {
     stages: ["answer", "verbs", "connectors", "slot", "rule", "retry"],
     stageIndex: 0,
     selectedAnswer: null,
+    initialAnswer: null,
     selectedTokens: new Set(),
     selectedSlot: null,
     firstAnswerCorrect: null,
@@ -61,16 +61,12 @@ function freshLearningState() {
 function shellHeader(title, badge) {
   return `
     <header class="topbar">
-      <div>
-        <p class="eyebrow">JK English</p>
-        <h1>${title}</h1>
-      </div>
+      <div><p class="eyebrow">JK English</p><h1>${title}</h1></div>
       <div class="header-actions">
         <span class="role-badge">${badge}</span>
         <button id="logoutBtn" class="header-button" type="button">나가기</button>
       </div>
-    </header>
-  `;
+    </header>`;
 }
 
 function bindLogout() {
@@ -92,8 +88,7 @@ function renderLogin() {
         </div>
         <p id="loginError" class="login-error" aria-live="polite"></p>
       </section>
-    </main>
-  `;
+    </main>`;
 
   const pin = document.querySelector("#pinInput");
   const error = document.querySelector("#loginError");
@@ -107,12 +102,9 @@ function renderLogin() {
     role = nextRole;
     nextRole === "student" ? renderStudentHome() : renderAdminHome();
   };
-
   document.querySelector("#studentLogin").addEventListener("click", () => attempt("student"));
   document.querySelector("#adminLogin").addEventListener("click", () => attempt("admin"));
-  pin.addEventListener("keydown", event => {
-    if (event.key === "Enter") attempt("student");
-  });
+  pin.addEventListener("keydown", e => { if (e.key === "Enter") attempt("student"); });
   setTimeout(() => pin.focus(), 50);
 }
 
@@ -123,36 +115,27 @@ function renderStudentHome() {
       ${shellHeader("오늘 학습", "학생")}
       <main class="dashboard-grid">
         <section class="panel">
-          <p class="eyebrow">CONTINUE</p>
-          <h2>PART 1 · 동사의 활용</h2>
+          <p class="eyebrow">CONTINUE</p><h2>PART 1 · 동사의 활용</h2>
           <p class="panel-copy">저자식 판단 순서대로 짧게 풀고, 틀린 근거만 바로 교정합니다.</p>
           <div class="unit-list">
             <button id="unit1Btn" class="unit-row active" type="button">
               <div><strong>CH 1 · UNIT 1</strong><br><span>접속사·관계사 + 1 = 동사 개수</span></div>
               <span class="status-pill ready">학습 가능</span>
             </button>
-            <div class="unit-row">
-              <div><strong>UNIT 2 이후</strong><br><span>교재 분석 후 순차 추가</span></div>
-              <span class="status-pill">준비 중</span>
-            </div>
+            <div class="unit-row"><div><strong>UNIT 2 이후</strong><br><span>교재 분석 후 순차 추가</span></div><span class="status-pill">준비 중</span></div>
           </div>
         </section>
         <aside class="panel">
-          <p class="eyebrow">TODAY</p>
-          <h2>학습 상태</h2>
+          <p class="eyebrow">TODAY</p><h2>학습 상태</h2>
           <div class="metric-grid">
             <div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div>
             <div class="metric"><span class="metric-label">교정 성공</span><strong>${store.repaired}</strong></div>
             <div class="metric"><span class="metric-label">시도</span><strong>${store.attempts}</strong></div>
           </div>
-          <div class="rule-box">
-            <strong>최근 상태</strong>
-            <p>${store.lastStatus}</p>
-          </div>
+          <div class="rule-box"><strong>최근 상태</strong><p>${store.lastStatus}</p></div>
         </aside>
       </main>
-    </div>
-  `;
+    </div>`;
   bindLogout();
   document.querySelector("#unit1Btn").addEventListener("click", startLearning);
 }
@@ -164,8 +147,7 @@ function renderAdminHome() {
       ${shellHeader("학습 관리", "관리자")}
       <main class="dashboard-grid">
         <section class="panel">
-          <p class="eyebrow">OVERVIEW</p>
-          <h2>학생 학습 현황</h2>
+          <p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2>
           <div class="metric-grid">
             <div class="metric"><span class="metric-label">전체 시도</span><strong>${store.attempts}</strong></div>
             <div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div>
@@ -178,15 +160,9 @@ function renderAdminHome() {
             <div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div>
           </div>
         </section>
-        <aside class="panel">
-          <p class="eyebrow">SIMPLE ADMIN</p>
-          <h2>운영 원칙</h2>
-          <p class="panel-copy">관리자 화면은 진도·정확도·교정 상태 확인에 집중합니다. 복잡한 LMS 기능은 넣지 않습니다.</p>
-          <div class="rule-box"><strong>현재 콘텐츠</strong><p>UNIT 1 파일럿</p></div>
-        </aside>
+        <aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>운영 원칙</h2><p class="panel-copy">관리자 화면은 진도·정확도·교정 상태 확인에 집중합니다. 복잡한 LMS 기능은 넣지 않습니다.</p><div class="rule-box"><strong>현재 콘텐츠</strong><p>UNIT 1 파일럿</p></div></aside>
       </main>
-    </div>
-  `;
+    </div>`;
   bindLogout();
 }
 
@@ -211,8 +187,7 @@ function renderLearningShell() {
         <section class="task-card" aria-live="polite"><div id="taskContent"></div></section>
         <div class="action-zone"><button id="primaryAction" class="primary-action" type="button" disabled>다음</button></div>
       </main>
-    </div>
-  `;
+    </div>`;
   document.querySelector("#homeBtn").addEventListener("click", renderStudentHome);
   document.querySelector("#primaryAction").addEventListener("click", handlePrimary);
 }
@@ -228,6 +203,16 @@ function updateProgress() {
   document.querySelector("#stageLabel").textContent = labels[currentStage()];
   document.querySelector("#progressText").textContent = `${step} / 6`;
   document.querySelector("#progressBar").style.width = `${(step / 6) * 100}%`;
+}
+
+function questionContext(showInitialChoice = true) {
+  const choiceText = learningState.initialAnswer ? learningState.initialAnswer : "아직 선택하지 않음";
+  return `
+    <div class="question-context">
+      <span class="context-label">문제 문장</span>
+      <p class="context-sentence">${demoItem.prompt}</p>
+      ${showInitialChoice ? `<p class="context-choice">처음 선택 <strong>${choiceText}</strong></p>` : ""}
+    </div>`;
 }
 
 function renderLearningStage() {
@@ -246,11 +231,10 @@ function renderAnswer(isRetry) {
   setPrimary(false, isRetry ? "결과 보기" : "근거 확인");
   taskContent().innerHTML = `
     <p class="task-kicker">${isRetry ? "원문 재도전" : "Cold Attempt"}</p>
-    <h2 class="task-title">설명 없이 먼저 답을 고르세요.</h2>
+    <h2 class="task-title">${isRetry ? "같은 문장을 다시 판단하세요." : "설명 없이 먼저 답을 고르세요."}</h2>
     <p class="question">${demoItem.prompt}</p>
     <div class="choice-grid" id="choices"></div>
-    ${isRetry ? "" : `<p class="task-copy">${demoItem.note}</p>`}
-  `;
+    ${isRetry ? "" : `<p class="task-copy">${demoItem.note}</p>`}`;
   const wrap = document.querySelector("#choices");
   demoItem.choices.forEach(choice => {
     const btn = document.createElement("button");
@@ -273,9 +257,9 @@ function renderTokenStage(kind) {
   taskContent().innerHTML = `
     <p class="task-kicker">${isVerb ? "STEP 2" : "STEP 3"}</p>
     <h2 class="task-title">${isVerb ? "본동사만 탭하세요." : "절을 추가하는 접속사·관계사만 탭하세요."}</h2>
+    ${questionContext(true)}
     <p class="task-copy">없다고 판단하면 아무것도 누르지 않고 넘어갈 수 있습니다.</p>
-    <div class="token-grid" id="tokenGrid"></div>
-  `;
+    <div class="token-grid" id="tokenGrid"></div>`;
   const wrap = document.querySelector("#tokenGrid");
   demoItem.tokens.forEach((token, idx) => {
     const btn = document.createElement("button");
@@ -286,9 +270,11 @@ function renderTokenStage(kind) {
     btn.addEventListener("click", () => {
       const key = btn.dataset.key;
       if (learningState.selectedTokens.has(key)) {
-        learningState.selectedTokens.delete(key); btn.classList.remove("selected");
+        learningState.selectedTokens.delete(key);
+        btn.classList.remove("selected");
       } else {
-        learningState.selectedTokens.add(key); btn.classList.add("selected");
+        learningState.selectedTokens.add(key);
+        btn.classList.add("selected");
       }
     });
     wrap.appendChild(btn);
@@ -299,10 +285,14 @@ function renderSlot() {
   learningState.selectedSlot = null;
   setPrimary(false, "5초 Rule 보기");
   taskContent().innerHTML = `
-    <p class="task-kicker">STEP 4</p><h2 class="task-title">빈칸은 어떤 자리입니까?</h2>
+    <p class="task-kicker">STEP 4</p>
+    <h2 class="task-title">빈칸은 어떤 자리입니까?</h2>
+    ${questionContext(true)}
     <p class="task-copy">동사 수와 연결어 수를 비교한 뒤 결정하세요.</p>
-    <div class="choice-grid"><button class="evidence-choice" data-slot="finite" type="button">본동사 자리</button><button class="evidence-choice" data-slot="nonfinite" type="button">준동사 자리</button></div>
-  `;
+    <div class="choice-grid">
+      <button class="evidence-choice" data-slot="finite" type="button">본동사 자리</button>
+      <button class="evidence-choice" data-slot="nonfinite" type="button">준동사 자리</button>
+    </div>`;
   document.querySelectorAll("[data-slot]").forEach(btn => btn.addEventListener("click", () => {
     learningState.selectedSlot = btn.dataset.slot;
     document.querySelectorAll("[data-slot]").forEach(el => el.classList.toggle("selected", el === btn));
@@ -313,10 +303,11 @@ function renderSlot() {
 function renderRule() {
   const slotCorrect = learningState.selectedSlot === demoItem.slotType;
   taskContent().innerHTML = `
-    <p class="task-kicker">5초 Rule</p><h2 class="task-title">동사부터 센다.</h2>
+    <p class="task-kicker">5초 Rule</p>
+    <h2 class="task-title">동사부터 센다.</h2>
+    ${questionContext(true)}
     <div class="rule-box"><strong>UNIT 1 핵심</strong><p>${demoItem.rule}</p></div>
-    <p class="feedback ${learningState.firstAnswerCorrect && slotCorrect ? "ok" : "warn"}">${learningState.firstAnswerCorrect && slotCorrect ? "정답과 자리 판단이 모두 안정적입니다." : "정답 또는 근거가 흔들렸습니다. 같은 문제를 표시 없이 다시 풉니다."}</p>
-  `;
+    <p class="feedback ${learningState.firstAnswerCorrect && slotCorrect ? "ok" : "warn"}">${learningState.firstAnswerCorrect && slotCorrect ? "정답과 자리 판단이 모두 안정적입니다." : "정답 또는 근거가 흔들렸습니다. 같은 문제를 표시 없이 다시 풉니다."}</p>`;
   setPrimary(true, "원문 재도전");
 }
 
@@ -342,8 +333,7 @@ function finishLearning() {
     <p class="task-kicker">학습 결과</p>
     <h2 class="task-title">${status === "UNRESOLVED" ? "한 번 더 교정이 필요합니다." : "오늘 판단을 정리했습니다."}</h2>
     <div class="rule-box"><strong>상태</strong><p>${status}</p></div>
-    <p class="task-copy">기록은 이 기기의 관리자 화면에도 즉시 반영됩니다.</p>
-  `;
+    <p class="task-copy">기록은 이 기기의 관리자 화면에도 즉시 반영됩니다.</p>`;
   document.querySelector("#stageLabel").textContent = "완료";
   document.querySelector("#progressText").textContent = "6 / 6";
   document.querySelector("#progressBar").style.width = "100%";
@@ -353,7 +343,10 @@ function finishLearning() {
 
 function handlePrimary() {
   const stage = currentStage();
-  if (stage === "answer") learningState.firstAnswerCorrect = learningState.selectedAnswer === demoItem.answer;
+  if (stage === "answer") {
+    learningState.initialAnswer = learningState.selectedAnswer;
+    learningState.firstAnswerCorrect = learningState.selectedAnswer === demoItem.answer;
+  }
   if (stage === "retry") return finishLearning();
   learningState.stageIndex += 1;
   renderLearningStage();
