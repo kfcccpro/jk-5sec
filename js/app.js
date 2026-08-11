@@ -1,19 +1,7 @@
 const STUDENT_PIN = "8081";
 const ADMIN_PIN = "2007";
-const STORAGE_KEY = "jk5sec_state_v1";
-
-const demoItem = {
-  id: "demo-finite-count-01",
-  prompt: "A careful reader ___ the number of finite verbs before choosing the answer.",
-  choices: ["checks", "checking"],
-  answer: "checks",
-  tokens: ["A", "careful", "reader", "checks", "the", "number", "of", "finite", "verbs", "before", "choosing", "the", "answer"],
-  finiteVerbTokens: ["checks"],
-  connectorTokens: [],
-  slotType: "finite",
-  rule: "접속사·관계사가 없으면 기본적으로 본동사 1개가 필요하다.",
-  note: "이 문장은 교재 원문이 아닌 UI 검증용 데모 문장입니다."
-};
+const STORAGE_KEY = "jk5sec_state_v2";
+const unitItems = Array.isArray(window.JK_UNIT1_ITEMS) ? window.JK_UNIT1_ITEMS : [];
 
 const defaultStore = {
   currentUnit: 1,
@@ -24,12 +12,13 @@ const defaultStore = {
   unresolved: 0,
   lastStatus: "아직 학습 기록 없음",
   lastStudyAt: null,
-  minutesToday: 0
+  minutesToday: 0,
+  unit1Runs: 0
 };
 
 let store = loadStore();
 let role = null;
-let learningState = freshLearningState();
+let session = freshSession();
 const app = document.querySelector("#app");
 
 function loadStore() {
@@ -45,28 +34,42 @@ function saveStore() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
 }
 
-function freshLearningState() {
+function freshSession() {
   return {
-    stages: ["answer", "verbs", "connectors", "slot", "rule", "retry"],
+    itemIndex: 0,
     stageIndex: 0,
+    stages: ["answer", "verbs", "connectors", "slot", "rule", "retry"],
     selectedAnswer: null,
-    initialAnswer: null,
     selectedTokens: new Set(),
     selectedSlot: null,
     firstAnswerCorrect: null,
+    evidence: { verbs: null, connectors: null, slot: null },
+    itemResults: [],
     startAt: Date.now()
   };
+}
+
+function currentItem() {
+  return unitItems[session.itemIndex];
+}
+
+function currentStage() {
+  return session.stages[session.stageIndex];
 }
 
 function shellHeader(title, badge) {
   return `
     <header class="topbar">
-      <div><p class="eyebrow">JK English</p><h1>${title}</h1></div>
+      <div>
+        <p class="eyebrow">JK English</p>
+        <h1>${title}</h1>
+      </div>
       <div class="header-actions">
         <span class="role-badge">${badge}</span>
         <button id="logoutBtn" class="header-button" type="button">나가기</button>
       </div>
-    </header>`;
+    </header>
+  `;
 }
 
 function bindLogout() {
@@ -88,7 +91,8 @@ function renderLogin() {
         </div>
         <p id="loginError" class="login-error" aria-live="polite"></p>
       </section>
-    </main>`;
+    </main>
+  `;
 
   const pin = document.querySelector("#pinInput");
   const error = document.querySelector("#loginError");
@@ -102,9 +106,10 @@ function renderLogin() {
     role = nextRole;
     nextRole === "student" ? renderStudentHome() : renderAdminHome();
   };
+
   document.querySelector("#studentLogin").addEventListener("click", () => attempt("student"));
   document.querySelector("#adminLogin").addEventListener("click", () => attempt("admin"));
-  pin.addEventListener("keydown", e => { if (e.key === "Enter") attempt("student"); });
+  pin.addEventListener("keydown", event => { if (event.key === "Enter") attempt("student"); });
   setTimeout(() => pin.focus(), 50);
 }
 
@@ -115,18 +120,23 @@ function renderStudentHome() {
       ${shellHeader("오늘 학습", "학생")}
       <main class="dashboard-grid">
         <section class="panel">
-          <p class="eyebrow">CONTINUE</p><h2>PART 1 · 동사의 활용</h2>
+          <p class="eyebrow">CONTINUE</p>
+          <h2>PART 1 · 동사의 활용</h2>
           <p class="panel-copy">저자식 판단 순서대로 짧게 풀고, 틀린 근거만 바로 교정합니다.</p>
           <div class="unit-list">
             <button id="unit1Btn" class="unit-row active" type="button">
               <div><strong>CH 1 · UNIT 1</strong><br><span>접속사·관계사 + 1 = 동사 개수</span></div>
-              <span class="status-pill ready">학습 가능</span>
+              <span class="status-pill ready">5문항</span>
             </button>
-            <div class="unit-row"><div><strong>UNIT 2 이후</strong><br><span>교재 분석 후 순차 추가</span></div><span class="status-pill">준비 중</span></div>
+            <div class="unit-row">
+              <div><strong>UNIT 2 이후</strong><br><span>교재 분석 후 순차 추가</span></div>
+              <span class="status-pill">준비 중</span>
+            </div>
           </div>
         </section>
         <aside class="panel">
-          <p class="eyebrow">TODAY</p><h2>학습 상태</h2>
+          <p class="eyebrow">TODAY</p>
+          <h2>학습 상태</h2>
           <div class="metric-grid">
             <div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div>
             <div class="metric"><span class="metric-label">교정 성공</span><strong>${store.repaired}</strong></div>
@@ -135,7 +145,8 @@ function renderStudentHome() {
           <div class="rule-box"><strong>최근 상태</strong><p>${store.lastStatus}</p></div>
         </aside>
       </main>
-    </div>`;
+    </div>
+  `;
   bindLogout();
   document.querySelector("#unit1Btn").addEventListener("click", startLearning);
 }
@@ -147,27 +158,38 @@ function renderAdminHome() {
       ${shellHeader("학습 관리", "관리자")}
       <main class="dashboard-grid">
         <section class="panel">
-          <p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2>
+          <p class="eyebrow">OVERVIEW</p>
+          <h2>학생 학습 현황</h2>
           <div class="metric-grid">
-            <div class="metric"><span class="metric-label">전체 시도</span><strong>${store.attempts}</strong></div>
+            <div class="metric"><span class="metric-label">전체 문항 시도</span><strong>${store.attempts}</strong></div>
             <div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div>
             <div class="metric"><span class="metric-label">미해결</span><strong>${store.unresolved}</strong></div>
           </div>
           <div class="admin-list">
             <div class="admin-row"><strong>현재 진도</strong><span>PART 1 · CH 1 · UNIT ${store.currentUnit}</span></div>
             <div class="admin-row"><strong>최근 판정</strong><span>${store.lastStatus}</span></div>
-            <div class="admin-row"><strong>교정 성공 횟수</strong><span>${store.repaired}</span></div>
+            <div class="admin-row"><strong>UNIT 1 완료 횟수</strong><span>${store.unit1Runs}</span></div>
             <div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div>
           </div>
         </section>
-        <aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>운영 원칙</h2><p class="panel-copy">관리자 화면은 진도·정확도·교정 상태 확인에 집중합니다. 복잡한 LMS 기능은 넣지 않습니다.</p><div class="rule-box"><strong>현재 콘텐츠</strong><p>UNIT 1 파일럿</p></div></aside>
+        <aside class="panel">
+          <p class="eyebrow">SIMPLE ADMIN</p>
+          <h2>운영 원칙</h2>
+          <p class="panel-copy">진도·정확도·교정 상태만 확인합니다. 복잡한 LMS 기능은 넣지 않습니다.</p>
+          <div class="rule-box"><strong>현재 콘텐츠</strong><p>UNIT 1 · 5문항 파일럿</p></div>
+        </aside>
       </main>
-    </div>`;
+    </div>
+  `;
   bindLogout();
 }
 
 function startLearning() {
-  learningState = freshLearningState();
+  if (!unitItems.length) {
+    alert("UNIT 1 문항 데이터를 불러오지 못했습니다.");
+    return;
+  }
+  session = freshSession();
   renderLearningShell();
   renderLearningStage();
 }
@@ -187,7 +209,8 @@ function renderLearningShell() {
         <section class="task-card" aria-live="polite"><div id="taskContent"></div></section>
         <div class="action-zone"><button id="primaryAction" class="primary-action" type="button" disabled>다음</button></div>
       </main>
-    </div>`;
+    </div>
+  `;
   document.querySelector("#homeBtn").addEventListener("click", renderStudentHome);
   document.querySelector("#primaryAction").addEventListener("click", handlePrimary);
 }
@@ -196,23 +219,30 @@ const labels = { answer: "문제 풀기", verbs: "본동사 찾기", connectors:
 const taskContent = () => document.querySelector("#taskContent");
 const primaryAction = () => document.querySelector("#primaryAction");
 
-function currentStage() { return learningState.stages[learningState.stageIndex]; }
-function setPrimary(enabled, label = "다음") { primaryAction().disabled = !enabled; primaryAction().textContent = label; }
-function updateProgress() {
-  const step = learningState.stageIndex + 1;
-  document.querySelector("#stageLabel").textContent = labels[currentStage()];
-  document.querySelector("#progressText").textContent = `${step} / 6`;
-  document.querySelector("#progressBar").style.width = `${(step / 6) * 100}%`;
+function setPrimary(enabled, label = "다음") {
+  primaryAction().disabled = !enabled;
+  primaryAction().textContent = label;
 }
 
-function questionContext(showInitialChoice = true) {
-  const choiceText = learningState.initialAnswer ? learningState.initialAnswer : "아직 선택하지 않음";
+function updateProgress() {
+  const itemNo = session.itemIndex + 1;
+  const stageNo = session.stageIndex + 1;
+  document.querySelector("#stageLabel").textContent = `${labels[currentStage()]} · ${itemNo}번`;
+  document.querySelector("#progressText").textContent = `${itemNo} / ${unitItems.length}`;
+  const totalSteps = unitItems.length * 6;
+  const completedSteps = session.itemIndex * 6 + stageNo;
+  document.querySelector("#progressBar").style.width = `${(completedSteps / totalSteps) * 100}%`;
+}
+
+function contextHtml({ includeChoice = true } = {}) {
+  const item = currentItem();
   return `
     <div class="question-context">
-      <span class="context-label">문제 문장</span>
-      <p class="context-sentence">${demoItem.prompt}</p>
-      ${showInitialChoice ? `<p class="context-choice">처음 선택 <strong>${choiceText}</strong></p>` : ""}
-    </div>`;
+      <span class="context-label">문제 ${session.itemIndex + 1}</span>
+      <p class="context-sentence">${item.prompt}</p>
+      ${includeChoice && session.firstAnswerCorrect !== null ? `<p class="context-choice">처음 선택 <strong>${session.initialAnswer}</strong></p>` : ""}
+    </div>
+  `;
 }
 
 function renderLearningStage() {
@@ -221,28 +251,29 @@ function renderLearningStage() {
   if (stage === "answer") return renderAnswer(false);
   if (stage === "verbs") return renderTokenStage("verbs");
   if (stage === "connectors") return renderTokenStage("connectors");
-  if (stage === "slot") return renderSlot();
+  if (stage === "slot") return renderDecision();
   if (stage === "rule") return renderRule();
   if (stage === "retry") return renderAnswer(true);
 }
 
 function renderAnswer(isRetry) {
-  learningState.selectedAnswer = null;
+  const item = currentItem();
+  session.selectedAnswer = null;
   setPrimary(false, isRetry ? "결과 보기" : "근거 확인");
   taskContent().innerHTML = `
     <p class="task-kicker">${isRetry ? "원문 재도전" : "Cold Attempt"}</p>
-    <h2 class="task-title">${isRetry ? "같은 문장을 다시 판단하세요." : "설명 없이 먼저 답을 고르세요."}</h2>
-    <p class="question">${demoItem.prompt}</p>
+    <h2 class="task-title">설명 없이 먼저 답을 고르세요.</h2>
+    <p class="question">${item.prompt}</p>
     <div class="choice-grid" id="choices"></div>
-    ${isRetry ? "" : `<p class="task-copy">${demoItem.note}</p>`}`;
+  `;
   const wrap = document.querySelector("#choices");
-  demoItem.choices.forEach(choice => {
+  item.choices.forEach(choice => {
     const btn = document.createElement("button");
     btn.className = "choice";
     btn.type = "button";
     btn.textContent = choice;
     btn.addEventListener("click", () => {
-      learningState.selectedAnswer = choice;
+      session.selectedAnswer = choice;
       [...wrap.children].forEach(el => el.classList.toggle("selected", el === btn));
       setPrimary(true, isRetry ? "결과 보기" : "근거 확인");
     });
@@ -251,29 +282,31 @@ function renderAnswer(isRetry) {
 }
 
 function renderTokenStage(kind) {
-  learningState.selectedTokens.clear();
+  const item = currentItem();
+  session.selectedTokens.clear();
   const isVerb = kind === "verbs";
   setPrimary(true, "판단 완료");
   taskContent().innerHTML = `
     <p class="task-kicker">${isVerb ? "STEP 2" : "STEP 3"}</p>
     <h2 class="task-title">${isVerb ? "본동사만 탭하세요." : "절을 추가하는 접속사·관계사만 탭하세요."}</h2>
-    ${questionContext(true)}
-    <p class="task-copy">없다고 판단하면 아무것도 누르지 않고 넘어갈 수 있습니다.</p>
-    <div class="token-grid" id="tokenGrid"></div>`;
+    ${contextHtml()}
+    <p class="task-copy">${!isVerb && item.omittedConnector ? "이 문장에는 생략된 관계사가 있을 수도 있습니다. 보이는 연결어만 확인한 뒤 넘어가세요." : "없다고 판단하면 아무것도 누르지 않고 넘어갈 수 있습니다."}</p>
+    <div class="token-grid" id="tokenGrid"></div>
+  `;
   const wrap = document.querySelector("#tokenGrid");
-  demoItem.tokens.forEach((token, idx) => {
+  item.tokens.forEach((token, idx) => {
     const btn = document.createElement("button");
     btn.className = "token-btn";
     btn.type = "button";
     btn.textContent = token;
-    btn.dataset.key = `${token}-${idx}`;
+    btn.dataset.index = String(idx);
     btn.addEventListener("click", () => {
-      const key = btn.dataset.key;
-      if (learningState.selectedTokens.has(key)) {
-        learningState.selectedTokens.delete(key);
+      const key = Number(btn.dataset.index);
+      if (session.selectedTokens.has(key)) {
+        session.selectedTokens.delete(key);
         btn.classList.remove("selected");
       } else {
-        learningState.selectedTokens.add(key);
+        session.selectedTokens.add(key);
         btn.classList.add("selected");
       }
     });
@@ -281,74 +314,154 @@ function renderTokenStage(kind) {
   });
 }
 
-function renderSlot() {
-  learningState.selectedSlot = null;
+function sameIndexSet(selected, expected) {
+  const a = [...selected].sort((x, y) => x - y);
+  const b = [...expected].sort((x, y) => x - y);
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+}
+
+function renderDecision() {
+  const item = currentItem();
+  session.selectedSlot = null;
   setPrimary(false, "5초 Rule 보기");
   taskContent().innerHTML = `
     <p class="task-kicker">STEP 4</p>
-    <h2 class="task-title">빈칸은 어떤 자리입니까?</h2>
-    ${questionContext(true)}
-    <p class="task-copy">동사 수와 연결어 수를 비교한 뒤 결정하세요.</p>
-    <div class="choice-grid">
-      <button class="evidence-choice" data-slot="finite" type="button">본동사 자리</button>
-      <button class="evidence-choice" data-slot="nonfinite" type="button">준동사 자리</button>
-    </div>`;
-  document.querySelectorAll("[data-slot]").forEach(btn => btn.addEventListener("click", () => {
-    learningState.selectedSlot = btn.dataset.slot;
-    document.querySelectorAll("[data-slot]").forEach(el => el.classList.toggle("selected", el === btn));
-    setPrimary(true, "5초 Rule 보기");
-  }));
+    <h2 class="task-title">빈칸의 역할을 결정하세요.</h2>
+    ${contextHtml()}
+    <p class="task-copy">앞에서 확인한 동사 수와 연결 구조를 근거로 판단합니다.</p>
+    <div class="choice-grid" id="decisionChoices"></div>
+  `;
+  const wrap = document.querySelector("#decisionChoices");
+  item.decisionOptions.forEach(option => {
+    const btn = document.createElement("button");
+    btn.className = "evidence-choice";
+    btn.type = "button";
+    btn.textContent = option.label;
+    btn.dataset.value = option.value;
+    btn.addEventListener("click", () => {
+      session.selectedSlot = option.value;
+      [...wrap.children].forEach(el => el.classList.toggle("selected", el === btn));
+      setPrimary(true, "5초 Rule 보기");
+    });
+    wrap.appendChild(btn);
+  });
 }
 
 function renderRule() {
-  const slotCorrect = learningState.selectedSlot === demoItem.slotType;
+  const item = currentItem();
+  const evidenceStable = session.evidence.verbs && session.evidence.connectors && session.evidence.slot;
   taskContent().innerHTML = `
     <p class="task-kicker">5초 Rule</p>
-    <h2 class="task-title">동사부터 센다.</h2>
-    ${questionContext(true)}
-    <div class="rule-box"><strong>UNIT 1 핵심</strong><p>${demoItem.rule}</p></div>
-    <p class="feedback ${learningState.firstAnswerCorrect && slotCorrect ? "ok" : "warn"}">${learningState.firstAnswerCorrect && slotCorrect ? "정답과 자리 판단이 모두 안정적입니다." : "정답 또는 근거가 흔들렸습니다. 같은 문제를 표시 없이 다시 풉니다."}</p>`;
+    <h2 class="task-title">동사 수와 연결 구조부터 본다.</h2>
+    ${contextHtml()}
+    <div class="rule-box"><strong>UNIT 1 핵심</strong><p>${item.rule}</p></div>
+    <p class="feedback ${session.firstAnswerCorrect && evidenceStable ? "ok" : "warn"}">
+      ${session.firstAnswerCorrect && evidenceStable ? "정답과 근거 판단이 모두 안정적입니다." : "정답 또는 근거가 흔들렸습니다. 표시 없이 같은 문제를 다시 풉니다."}
+    </p>
+  `;
   setPrimary(true, "원문 재도전");
 }
 
-function finishLearning() {
-  const retryCorrect = learningState.selectedAnswer === demoItem.answer;
-  const slotCorrect = learningState.selectedSlot === demoItem.slotType;
+function recordCurrentItem() {
+  const item = currentItem();
+  const retryCorrect = session.selectedAnswer === item.answer;
+  const evidenceStable = session.evidence.verbs && session.evidence.connectors && session.evidence.slot;
   let status;
-  if (learningState.firstAnswerCorrect && slotCorrect && retryCorrect) status = "MASTERED_NOW";
+  if (session.firstAnswerCorrect && evidenceStable && retryCorrect) status = "MASTERED_NOW";
   else if (retryCorrect) status = "REPAIRED";
   else status = "UNRESOLVED";
 
+  session.itemResults.push({ id: item.id, status, errorCode: item.errorCode });
   store.attempts += 1;
-  if (learningState.firstAnswerCorrect) store.correctFirst += 1;
+  if (session.firstAnswerCorrect) store.correctFirst += 1;
   if (status === "REPAIRED") store.repaired += 1;
   if (status === "UNRESOLVED") store.unresolved += 1;
-  store.lastStatus = status;
+  store.lastStatus = `${session.itemIndex + 1}번 ${status}`;
   store.lastStudyAt = new Date().toISOString();
-  store.minutesToday += Math.max(1, Math.round((Date.now() - learningState.startAt) / 60000));
-  if (status === "MASTERED_NOW" || status === "REPAIRED") store.completedUnits = [...new Set([...store.completedUnits, 1])];
+  saveStore();
+  return status;
+}
+
+function nextItemOrFinish(status) {
+  if (session.itemIndex < unitItems.length - 1) {
+    taskContent().innerHTML = `
+      <p class="task-kicker">문제 ${session.itemIndex + 1} 완료</p>
+      <h2 class="task-title">${status === "UNRESOLVED" ? "복습 대상으로 저장했습니다." : "판단을 정리했습니다."}</h2>
+      <div class="rule-box"><strong>상태</strong><p>${status}</p></div>
+      <p class="task-copy">다음 문제에서도 같은 방식으로 먼저 답을 고른 뒤 근거를 확인합니다.</p>
+    `;
+    setPrimary(true, "다음 문제");
+    primaryAction().onclick = () => {
+      session.itemIndex += 1;
+      session.stageIndex = 0;
+      session.selectedAnswer = null;
+      session.selectedTokens.clear();
+      session.selectedSlot = null;
+      session.firstAnswerCorrect = null;
+      session.initialAnswer = null;
+      session.evidence = { verbs: null, connectors: null, slot: null };
+      primaryAction().onclick = handlePrimary;
+      renderLearningStage();
+    };
+    return;
+  }
+  finishUnit();
+}
+
+function finishUnit() {
+  const mastered = session.itemResults.filter(r => r.status === "MASTERED_NOW").length;
+  const repaired = session.itemResults.filter(r => r.status === "REPAIRED").length;
+  const unresolved = session.itemResults.filter(r => r.status === "UNRESOLVED").length;
+  store.unit1Runs += 1;
+  store.minutesToday += Math.max(1, Math.round((Date.now() - session.startAt) / 60000));
+  store.lastStatus = `UNIT 1 완료 · 안정 ${mastered} · 교정 ${repaired} · 미해결 ${unresolved}`;
+  if (!unresolved) store.completedUnits = [...new Set([...store.completedUnits, 1])];
   saveStore();
 
   taskContent().innerHTML = `
-    <p class="task-kicker">학습 결과</p>
-    <h2 class="task-title">${status === "UNRESOLVED" ? "한 번 더 교정이 필요합니다." : "오늘 판단을 정리했습니다."}</h2>
-    <div class="rule-box"><strong>상태</strong><p>${status}</p></div>
-    <p class="task-copy">기록은 이 기기의 관리자 화면에도 즉시 반영됩니다.</p>`;
-  document.querySelector("#stageLabel").textContent = "완료";
-  document.querySelector("#progressText").textContent = "6 / 6";
+    <p class="task-kicker">UNIT 1 완료</p>
+    <h2 class="task-title">5문항 판단 결과</h2>
+    <div class="metric-grid">
+      <div class="metric"><span class="metric-label">안정 정답</span><strong>${mastered}</strong></div>
+      <div class="metric"><span class="metric-label">교정 성공</span><strong>${repaired}</strong></div>
+      <div class="metric"><span class="metric-label">미해결</span><strong>${unresolved}</strong></div>
+    </div>
+    <div class="rule-box"><strong>다음 학습</strong><p>${unresolved ? "미해결 문항은 이후 예약 복습 대상으로 넘깁니다." : "UNIT 1의 핵심 판단은 현재 안정적입니다."}</p></div>
+  `;
+  document.querySelector("#stageLabel").textContent = "UNIT 완료";
+  document.querySelector("#progressText").textContent = `${unitItems.length} / ${unitItems.length}`;
   document.querySelector("#progressBar").style.width = "100%";
   setPrimary(true, "학생 홈으로");
   primaryAction().onclick = renderStudentHome;
 }
 
 function handlePrimary() {
+  const item = currentItem();
   const stage = currentStage();
+
   if (stage === "answer") {
-    learningState.initialAnswer = learningState.selectedAnswer;
-    learningState.firstAnswerCorrect = learningState.selectedAnswer === demoItem.answer;
+    session.initialAnswer = session.selectedAnswer;
+    session.firstAnswerCorrect = session.selectedAnswer === item.answer;
   }
-  if (stage === "retry") return finishLearning();
-  learningState.stageIndex += 1;
+
+  if (stage === "verbs") {
+    session.evidence.verbs = sameIndexSet(session.selectedTokens, item.finiteVerbIndices);
+  }
+
+  if (stage === "connectors") {
+    session.evidence.connectors = sameIndexSet(session.selectedTokens, item.connectorIndices);
+  }
+
+  if (stage === "slot") {
+    session.evidence.slot = session.selectedSlot === item.decisionAnswer;
+  }
+
+  if (stage === "retry") {
+    const status = recordCurrentItem();
+    return nextItemOrFinish(status);
+  }
+
+  session.stageIndex += 1;
   renderLearningStage();
 }
 
