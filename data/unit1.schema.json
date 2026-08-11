@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JK 5SEC Unit 1 Learning Item",
+  "type": "object",
+  "required": [
+    "id",
+    "source",
+    "choices",
+    "answer",
+    "decision",
+    "evidence",
+    "errorCode",
+    "statePolicy"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "source": {
+      "type": "object",
+      "required": ["part", "chapter", "unit", "bookPage", "pdfPage", "itemNo"],
+      "properties": {
+        "part": { "type": "integer" },
+        "chapter": { "type": "integer" },
+        "unit": { "type": "integer" },
+        "bookPage": { "type": "integer" },
+        "pdfPage": { "type": "integer" },
+        "itemNo": { "type": "integer" }
+      }
+    },
+    "promptRef": {
+      "description": "Public repository does not store full textbook prompt by default.",
+      "type": ["string", "null"]
+    },
+    "choices": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" }
+    },
+    "answer": { "type": "string" },
+    "decision": {
+      "type": "object",
+      "required": ["ruleId", "connectorCount", "requiredFiniteVerbs", "observedFiniteVerbs", "slotType"],
+      "properties": {
+        "ruleId": { "const": "FINITE_COUNT_V1" },
+        "connectorCount": { "type": "integer", "minimum": 0 },
+        "requiredFiniteVerbs": { "type": "integer", "minimum": 1 },
+        "observedFiniteVerbs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "omittedRelativeCount": { "type": "integer", "minimum": 0, "default": 0 },
+        "ignoreInsertion": { "type": "boolean", "default": false },
+        "slotType": { "enum": ["finite", "nonfinite", "pronoun"] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["studentActions"],
+      "properties": {
+        "studentActions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "choose_answer",
+              "tap_finite_verbs",
+              "tap_connectors",
+              "mark_omitted_relative",
+              "choose_slot_type",
+              "retry_original"
+            ]
+          }
+        }
+      }
+    },
+    "errorCode": {
+      "enum": [
+        "ADDED_EXTRA_FINITE_VERB",
+        "MISSED_OMITTED_RELATIVE",
+        "OVERCOUNTED_RELATIVE_CLAUSE",
+        "FAILED_TO_IGNORE_INSERTION",
+        "MISSED_REQUIRED_FINITE_VERB"
+      ]
+    },
+    "statePolicy": {
+      "type": "object",
+      "required": ["successStates"],
+      "properties": {
+        "successStates": {
+          "type": "array",
+          "items": {
+            "enum": ["MASTERED_NOW", "CORRECT_UNSTABLE", "REPAIRED", "UNRESOLVED"]
+          }
+        }
+      }
+    }
+  }
+}
