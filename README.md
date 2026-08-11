@@ -15,4 +15,24 @@
 
 ## 현재 단계
 
-Phase 1 - 교재 철학·학습 구조·디바이스 UI 원칙 확정
+Phase 3 - iPad·Galaxy Tab·PC용 반응형 학습 UI 1차 구현 완료
+
+### 구현된 흐름
+
+1. Cold Attempt
+2. 본동사 찾기
+3. 절 연결어 확인
+4. 본동사/준동사 자리 판단
+5. 5초 Rule 확인
+6. 원문 재도전
+
+### 현재 구현 파일
+
+- `index.html`
+- `css/app.css`
+- `js/app.js`
+- `docs/PHASE2_UNIT1_ANALYSIS.md`
+- `docs/PHASE3_UI_WIREFRAME.md`
+- `data/unit1.schema.json`
+
+현재 저장소가 Public이므로 UI 검증용 문장은 교재 원문이 아닌 별도 데모 문장을 사용합니다.
