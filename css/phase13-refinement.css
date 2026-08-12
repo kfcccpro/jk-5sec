@@ -1,0 +1,143 @@
+/*
+  Phase 13 visual refinement
+  - keep JK·5S identity at screen-level brand positions only
+  - reduce unnecessary vertical whitespace in learning cards
+  - make review width presets respond like real breakpoints via container queries
+*/
+
+/* The theme originally injected JK·5S into every eyebrow label.
+   Keep the mark only where the product identity belongs. */
+.eyebrow::before {
+  content: none;
+}
+
+.topbar .eyebrow::before,
+.login-card > .eyebrow::before,
+.review-header .eyebrow::before,
+.review-preview-topbar .eyebrow::before {
+  content: "JK·5S";
+}
+
+/* Avoid a second identity badge immediately beside the review title. */
+.review-header h1::after {
+  content: none;
+  display: none;
+}
+
+/* Learning canvas: keep the calm spacing while reducing empty-card height. */
+.task-card {
+  min-height: min(520px, 62dvh);
+}
+
+.question,
+.context-sentence {
+  line-height: 1.62;
+}
+
+@media (max-width: 820px) {
+  .task-card {
+    min-height: min(500px, 58dvh);
+    padding: 26px 22px;
+  }
+
+  .question,
+  .context-sentence {
+    line-height: 1.58;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 700px) {
+  .task-card {
+    min-height: auto;
+  }
+}
+
+/*
+  Review mode previously changed only the preview element width.
+  CSS media queries still evaluated the outer browser width, so the 768px
+  preset did not faithfully reproduce tablet rules on a desktop browser.
+  Container queries make the static review preview react to its own width.
+*/
+.review-viewport {
+  container-type: inline-size;
+}
+
+@container (max-width: 900px) {
+  .review-viewport .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-viewport .review-journey-grid,
+  .review-viewport .review-maintenance-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .review-viewport .review-part-summary {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .review-viewport .review-part-meta {
+    grid-column: 2;
+    text-align: left;
+  }
+}
+
+@container (max-width: 820px) {
+  .review-viewport-inner {
+    padding: 22px;
+  }
+
+  .review-viewport .unit-badge,
+  .review-viewport .role-badge {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .review-viewport .task-card {
+    min-height: 500px;
+    padding: 28px 22px;
+  }
+
+  .review-viewport .choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-viewport .task-title {
+    font-size: 24px;
+  }
+
+  .review-viewport .choice,
+  .review-viewport .evidence-choice {
+    min-height: 56px;
+    font-size: 17px;
+  }
+
+  .review-viewport .question,
+  .review-viewport .context-sentence {
+    line-height: 1.58;
+  }
+}
+
+@container (max-width: 760px) {
+  .review-viewport .review-home-parts,
+  .review-viewport .review-admin-focus,
+  .review-viewport .review-admin-card-grid,
+  .review-viewport .review-journey-grid,
+  .review-viewport .review-maintenance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-viewport .review-part-summary {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .review-viewport .review-part-meta {
+    grid-column: auto;
+  }
+
+  .review-viewport .review-preview-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
