@@ -1,6 +1,6 @@
 (function attachContentContract(root) {
   root.JK_CONTENT_CONTRACT = {
-    version: "1.2.0",
+    version: "1.3.0",
     repositoryPolicy: {
       publicRepository: true,
       sourceTextStorage: "reference-only",
@@ -56,6 +56,13 @@
         authorRuleRef: "rule:p1-c1-u5-passive-impossible-verbs",
         source: { ref: "textbook:p1-c1-u5:p26", publicStorage: "reference-only", fullTextStored: false },
         decisionSchema: { targetVerb: "string", groupAnswer: "string", usageAnswer: "string", formAnswer: "string" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
+      },
+      6: {
+        status: "implemented", part: 1, chapter: 1, unit: 6, globalName: "JK_UNIT6_ITEMS",
+        authorRuleRef: "rule:p1-c1-u6-passive-two-nouns",
+        source: { ref: "textbook:p1-c1-u6:p27", publicStorage: "reference-only", fullTextStored: false },
+        decisionSchema: { targetVerb: "string", patternAnswer: "string", remainingRoleAnswer: "string", passiveAnswer: "string" },
         review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       }
     }
