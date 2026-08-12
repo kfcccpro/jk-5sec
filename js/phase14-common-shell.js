@@ -1,21 +1,32 @@
 (() => {
   const unitRegistry = [
-    { id: 1, chapterLabel: "CH 1 · UNIT 1", focus: "접속사·관계사 + 1 = 동사 개수", itemCount: unitItems.length || 5, start: startLearning, runKey: "unit1Runs" },
-    { id: 2, chapterLabel: "CH 1 · UNIT 2", focus: "~ing / ~ed · 목적어로 능동·수동 판단", itemCount: unit2Items.length || 5, start: startUnit2, runKey: "unit2Runs" },
-    { id: 3, chapterLabel: "CH 1 · UNIT 3", focus: "~ed / be + ~ed · 자리로 p.p.와 수동태 구분", itemCount: unit3Items.length || 5, start: startUnit3, runKey: "unit3Runs" },
-    { id: 4, chapterLabel: "CH 1 · UNIT 4", focus: "접속사 + V-ing / p.p. · 목적어 우선 판정", itemCount: unit4Items.length || 5, start: startUnit4, runKey: "unit4Runs" },
-    { id: 5, chapterLabel: "CH 1 · UNIT 5", focus: "수동태 불가 동사 · 금지 동사 먼저 확인", itemCount: unit5Items.length || 5, start: startUnit5, runKey: "unit5Runs" },
-    { id: 6, chapterLabel: "CH 1 · UNIT 6", focus: "뒤에 두 명사 · 4형식 목적어 / 5형식 보어 판정", itemCount: unit6Items.length || 5, start: startUnit6, runKey: "unit6Runs" },
-    { id: 7, chapterLabel: "CH 1 · UNIT 7", focus: "여러 수동태 · 보조동사 사슬부터 읽기", itemCount: unit7Items.length || 5, start: startUnit7, runKey: "unit7Runs" }
+    { id: 1, part: 1, chapter: 1, unit: 1, chapterLabel: "CH 1 · UNIT 1", focus: "접속사·관계사 + 1 = 동사 개수", itemCount: unitItems.length || 5, start: startLearning, runKey: "unit1Runs" },
+    { id: 2, part: 1, chapter: 1, unit: 2, chapterLabel: "CH 1 · UNIT 2", focus: "~ing / ~ed · 목적어로 능동·수동 판단", itemCount: unit2Items.length || 5, start: startUnit2, runKey: "unit2Runs" },
+    { id: 3, part: 1, chapter: 1, unit: 3, chapterLabel: "CH 1 · UNIT 3", focus: "~ed / be + ~ed · 자리로 p.p.와 수동태 구분", itemCount: unit3Items.length || 5, start: startUnit3, runKey: "unit3Runs" },
+    { id: 4, part: 1, chapter: 1, unit: 4, chapterLabel: "CH 1 · UNIT 4", focus: "접속사 + V-ing / p.p. · 목적어 우선 판정", itemCount: unit4Items.length || 5, start: startUnit4, runKey: "unit4Runs" },
+    { id: 5, part: 1, chapter: 1, unit: 5, chapterLabel: "CH 1 · UNIT 5", focus: "수동태 불가 동사 · 금지 동사 먼저 확인", itemCount: unit5Items.length || 5, start: startUnit5, runKey: "unit5Runs" },
+    { id: 6, part: 1, chapter: 1, unit: 6, chapterLabel: "CH 1 · UNIT 6", focus: "뒤에 두 명사 · 4형식 목적어 / 5형식 보어 판정", itemCount: unit6Items.length || 5, start: startUnit6, runKey: "unit6Runs" },
+    { id: 7, part: 1, chapter: 1, unit: 7, chapterLabel: "CH 1 · UNIT 7", focus: "여러 수동태 · 보조동사 사슬부터 읽기", itemCount: unit7Items.length || 5, start: startUnit7, runKey: "unit7Runs" },
+    { id: 8, part: 1, chapter: 2, unit: 1, chapterLabel: "CH 2 · UNIT 1", focus: "본동사 + 표현 + to-V / ~ing · 앞 표현부터 판정", itemCount: unit8Items.length || 5, start: startUnit8, runKey: "unit8Runs" }
   ];
+
+  function nextPendingLabel() {
+    const last = unitRegistry[unitRegistry.length - 1];
+    const part = (window.JK_COURSE_MAP?.parts || []).find(item => item.no === last.part);
+    const chapter = (part?.chapters || []).find(item => item.no === last.chapter);
+    if (chapter?.units?.length && last.unit < chapter.units.length) return `CH ${last.chapter} · UNIT ${last.unit + 1}`;
+    const nextChapter = (part?.chapters || []).find(item => item.no === last.chapter + 1);
+    if (nextChapter?.units?.length) return `CH ${nextChapter.no} · UNIT 1`;
+    return "다음 학습";
+  }
 
   function renderUnitRows() {
     const ready = unitRegistry.map(unit => `<button id="unit${unit.id}Btn" class="unit-row active" type="button"><div><strong>${unit.chapterLabel}</strong><br><span>${unit.focus}</span></div><span class="status-pill ready">${unit.itemCount}문항</span></button>`).join("");
-    const nextUnit = Math.max(...unitRegistry.map(unit => unit.id)) + 1;
-    return `${ready}<div class="unit-row"><div><strong>다음 CHAPTER</strong><br><span>교재 순서대로 단계별 추가</span></div><span class="status-pill">준비 중</span></div>`;
+    return `${ready}<div class="unit-row"><div><strong>${nextPendingLabel()}</strong><br><span>교재 순서대로 단계별 추가</span></div><span class="status-pill">준비 중</span></div>`;
   }
 
   function bindUnitLaunchers() { unitRegistry.forEach(unit => document.querySelector(`#unit${unit.id}Btn`)?.addEventListener("click", unit.start)); }
+  function currentRegistryUnit() { return unitRegistry.find(unit => unit.id === Number(store.currentUnit)) || unitRegistry[0]; }
 
   function renderStudentHomeStable() {
     const accuracy = store.attempts ? Math.round((store.correctFirst / store.attempts) * 100) : 0;
@@ -26,8 +37,9 @@
 
   function renderAdminHomeStable() {
     const accuracy = store.attempts ? Math.round((store.correctFirst / store.attempts) * 100) : 0;
-    const runRows = unitRegistry.map(unit => `<div class="admin-row"><strong>UNIT ${unit.id} 완료 횟수</strong><span>${store[unit.runKey] || 0}</span></div>`).join("");
-    app.innerHTML = `<div class="screen">${shellHeader("학습 관리", "관리자")}<main class="dashboard-grid"><section class="panel"><p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2><div class="metric-grid"><div class="metric"><span class="metric-label">전체 문항 시도</span><strong>${store.attempts}</strong></div><div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div><div class="metric"><span class="metric-label">미해결</span><strong>${store.unresolved}</strong></div></div><div class="admin-list"><div class="admin-row"><strong>현재 진도</strong><span>PART 1 · CH 1 · UNIT ${store.currentUnit}</span></div><div class="admin-row"><strong>최근 판정</strong><span>${store.lastStatus}</span></div>${runRows}<div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div></div></section><aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>현재 콘텐츠</h2><p class="panel-copy">PART 1 · CHAPTER 1의 UNIT 1~7 학습 루프를 사용할 수 있습니다.</p><div class="rule-box"><strong>운영 원칙</strong><p>진도·정확도·교정 상태만 간단히 확인합니다.</p></div></aside></main></div>`;
+    const current = currentRegistryUnit();
+    const runRows = unitRegistry.map(unit => `<div class="admin-row"><strong>${unit.chapterLabel} 완료 횟수</strong><span>${store[unit.runKey] || 0}</span></div>`).join("");
+    app.innerHTML = `<div class="screen">${shellHeader("학습 관리", "관리자")}<main class="dashboard-grid"><section class="panel"><p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2><div class="metric-grid"><div class="metric"><span class="metric-label">전체 문항 시도</span><strong>${store.attempts}</strong></div><div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div><div class="metric"><span class="metric-label">미해결</span><strong>${store.unresolved}</strong></div></div><div class="admin-list"><div class="admin-row"><strong>현재 진도</strong><span>PART ${current.part} · ${current.chapterLabel}</span></div><div class="admin-row"><strong>최근 판정</strong><span>${store.lastStatus}</span></div>${runRows}<div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div></div></section><aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>현재 콘텐츠</h2><p class="panel-copy">PART 1 · CHAPTER 1 UNIT 1~7과 CHAPTER 2 UNIT 1 학습 루프를 사용할 수 있습니다.</p><div class="rule-box"><strong>운영 원칙</strong><p>진도·정확도·교정 상태만 간단히 확인합니다.</p></div></aside></main></div>`;
     bindLogout();
   }
 
@@ -90,5 +102,10 @@
   updateUnit7Progress = () => updateLearningProgress({ sessionState: unit7Session, itemCount: unit7Items.length, labels: unit7Labels, currentStageName: currentUnit7Stage() });
   unit7ContextHtml = () => renderContextBlock({ prompt: currentUnit7Item().prompt, itemIndex: unit7Session.itemIndex, initialAnswer: unit7Session.initialAnswer, showChoice: Boolean(unit7Session.initialAnswer) });
 
-  window.JKCommonShell = { units: unitRegistry.map(({ id, chapterLabel, focus, itemCount, runKey }) => ({ id, chapterLabel, focus, itemCount, runKey })), renderLearningShell: renderCommonLearningShell, setPrimaryAction, updateLearningProgress, renderContextBlock };
+  renderUnit8Shell = () => renderCommonLearningShell({ unitBadge: "PART 1 · CH 2 · UNIT 1", onPrimary: handleUnit8Primary });
+  setUnit8Primary = setPrimaryAction;
+  updateUnit8Progress = () => updateLearningProgress({ sessionState: unit8Session, itemCount: unit8Items.length, labels: unit8Labels, currentStageName: currentUnit8Stage() });
+  unit8ContextHtml = () => renderContextBlock({ prompt: currentUnit8Item().prompt, itemIndex: unit8Session.itemIndex, initialAnswer: unit8Session.initialAnswer, showChoice: Boolean(unit8Session.initialAnswer) });
+
+  window.JKCommonShell = { units: unitRegistry.map(({ id, part, chapter, unit, chapterLabel, focus, itemCount, runKey }) => ({ id, part, chapter, unit, chapterLabel, focus, itemCount, runKey })), renderLearningShell: renderCommonLearningShell, setPrimaryAction, updateLearningProgress, renderContextBlock };
 })();

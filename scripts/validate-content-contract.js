@@ -18,6 +18,7 @@ load("js/unit4-data.js");
 load("js/unit5-data.js");
 load("js/unit6-data.js");
 load("js/unit7-data.js");
+load("js/unit8-data.js");
 
 const contract = global.JK_CONTENT_CONTRACT;
 const errors = [];
@@ -39,20 +40,22 @@ function scanBannedKeys(value, pathLabel) {
   });
 }
 
-if (!contract || contract.version !== "1.4.0") errors.push("content contract version 1.4.0 is required");
+if (!contract || contract.version !== "1.5.0") errors.push("content contract version 1.5.0 is required");
 if (contract?.repositoryPolicy?.sourceTextStorage !== "reference-only") errors.push("sourceTextStorage must stay reference-only");
 if (contract?.repositoryPolicy?.fullTextAllowed !== false) errors.push("fullTextAllowed must stay false in the public repository");
 scanBannedKeys(contract, "contract");
 
-Object.values(contract.collections).filter(collection => collection.status === "implemented").forEach(collection => {
+Object.entries(contract.collections).filter(([, collection]) => collection.status === "implemented").forEach(([runtimeKey, collection]) => {
+  const runtimeUnit = Number(runtimeKey);
   const items = global[collection.globalName];
+  const scope = `P${collection.part} CH${collection.chapter} U${collection.unit}`;
   if (!Array.isArray(items) || items.length === 0) {
-    errors.push(`UNIT ${collection.unit}: ${collection.globalName} must be a non-empty array`);
+    errors.push(`${scope}: ${collection.globalName} must be a non-empty array`);
     return;
   }
-  if (collection.source?.publicStorage !== "reference-only" || collection.source?.fullTextStored !== false) errors.push(`UNIT ${collection.unit}: source boundary must be reference-only with fullTextStored=false`);
+  if (collection.source?.publicStorage !== "reference-only" || collection.source?.fullTextStored !== false) errors.push(`${scope}: source boundary must be reference-only with fullTextStored=false`);
   items.forEach((item, index) => {
-    const label = `UNIT ${collection.unit} item ${index + 1}`;
+    const label = `${scope} item ${index + 1}`;
     Object.entries(contract.sharedItemSchema).forEach(([field, expected]) => {
       if (!typeMatches(item[field], expected)) errors.push(`${label}: invalid or missing shared field ${field}`);
     });
@@ -60,7 +63,7 @@ Object.values(contract.collections).filter(collection => collection.status === "
       if (!typeMatches(item[field], expected)) errors.push(`${label}: invalid or missing UNIT-specific field ${field}`);
     });
     if (typeof item.id === "string") {
-      if (!item.id.startsWith(`u${collection.unit}-`)) errors.push(`${label}: id must start with u${collection.unit}-`);
+      if (!item.id.startsWith(`u${runtimeUnit}-`)) errors.push(`${label}: id must start with runtime prefix u${runtimeUnit}-`);
       if (ids.has(item.id)) errors.push(`${label}: duplicate id ${item.id}`);
       ids.add(item.id);
     }
@@ -76,4 +79,4 @@ if (errors.length) {
 }
 
 const implementedCount = Object.values(contract.collections).filter(collection => collection.status === "implemented").length;
-console.log(`CONTENT CONTRACT CHECK PASS: ${ids.size} items across ${implementedCount} implemented UNITs`);
+console.log(`CONTENT CONTRACT CHECK PASS: ${ids.size} items across ${implementedCount} implemented lessons`);
