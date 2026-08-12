@@ -2,7 +2,7 @@
 
 ## Current version
 
-`v0.14.0-phase14-common-shell`
+`v0.15.0-phase15-content-contract`
 
 ## Source of truth
 
@@ -24,156 +24,146 @@
 - Phase 9: full textbook course map for review/navigation
 - Phase 10: review-only UI inspection mode expanded
 - Phase 11: result/admin/maintenance review architecture
-- Phase 12: learner-preferred `1001` visual language adapted to JK 5SEC
+- Phase 12: `1001` visual language adapted to JK 5SEC
 - Phase 13A: review-width simulation and visual-density refinement
 - Phase 14A: common Shell compatibility layer and stable UNIT registry
 - Phase 14A CI: JavaScript syntax gate before GitHub Pages deployment
+- Phase 15: content/data contract finalized before UNIT 4+
+- Phase 15 CI: semantic content-contract gate added before deployment
 
-## Current design baseline
+## Current learning content
 
-Reference app: `kfcccpro/1001`
-
-Current visual principles:
-- warm off-white background
-- calm green accent
-- 980px-class content width
-- low-contrast borders/shadows
-- large readable English sentence typography
-- large Korean guidance and action labels
-- 54–58px-class controls
-- deep navy `JK·5S` identity mark only at screen-level brand positions
-
-Primary styles:
-- `css/theme-1001-inspired.css`
-- `css/phase13-refinement.css`
-
-## Actual learning content currently implemented
-
+Implemented:
 - PART 1 / CHAPTER 1 / UNIT 1
 - PART 1 / CHAPTER 1 / UNIT 2
 - PART 1 / CHAPTER 1 / UNIT 3
 
-Repository is Public; textbook full original text is not copied into GitHub. Derived/practice content and structural metadata are used for development.
+Next textbook unit:
+- PART 1 / CHAPTER 1 / UNIT 4: `접속사 + V-ing or p.p.`
 
-## Phase 14 implementation
+The repository is Public. Textbook full original text is not copied into GitHub.
 
-New common layer:
-- `js/phase14-common-shell.js`
+## Phase 14 architecture baseline
 
-It provides:
-- one stable UNIT registry for UNIT 1~3 navigation metadata
-- one stable student-home renderer
-- one stable admin-home renderer
-- one common learning Shell renderer
-- one primary-action helper
-- one progress helper
-- one context-block helper
+Common layer: `js/phase14-common-shell.js`
 
-Important architecture rule:
-- UNIT-specific author decision logic remains inside each UNIT engine.
-- UNIT 1: verb count / connector count / slot judgment
-- UNIT 2: position / object / active-passive judgment
-- UNIT 3: position / object relevance / p.p. vs be+p.p. vs active past
-- do not create a universal stage engine.
-
-Compatibility strategy:
-- legacy UNIT 1/2/3 functions remain in place for now.
-- the Phase 14 common layer loads after UNIT 3 and replaces only duplicated home/Shell/helper bindings.
-- this minimizes behavior changes before live regression confirmation.
-- chained home override code inside older UNIT files is now superseded at runtime but has not yet been physically deleted.
-
-## CI / deployment verification
-
-`.github/workflows/pages.yml` now runs a JavaScript syntax gate before deployment:
-
-- all `.js` files in `js/` and `data/` are checked with `node --check`
-- deployment is blocked if syntax checking fails
-
-For the Phase 14 deployment run:
-- JavaScript syntax check: PASS
-- Setup Pages: PASS
-- Upload static site: PASS
-- Deploy to GitHub Pages: PASS
-
-## Review mode
-
-Use `?review=1` to inspect UI independent of scoring/progress.
-
-Views:
-- full structure
-- learning flow
+Commonized:
+- UNIT registry
 - student home
-- question
-- evidence judgment
-- 5-second Rule
-- result
-- admin
-- maintenance/reuse architecture
+- admin home
+- learning Shell
+- primary action helper
+- progress helper
+- context block helper
 
-Widths:
-- 768
-- 1024
-- 1180
-- 1366
-- 1440
+Not universalized:
+- UNIT-specific author decision logic
+- answer judgment logic
+- stage-specific evidence questions
 
-Container-query refinement from Phase 13 allows the preview itself to respond to 768/1024-class widths even when the outer browser is wide.
+Legacy UNIT 1/2/3 functions remain physically present for compatibility; the Phase 14 layer replaces duplicated home/Shell/helper bindings at runtime.
 
-## First unfinished work
+## Phase 15 content/data contract
+
+Machine-readable contract:
+- `data/content-contract.js`
+
+Architecture document:
+- `docs/PHASE15_DATA_CONTRACT.md`
+
+Semantic validator:
+- `scripts/validate-content-contract.js`
+
+Shared item fields:
+- `id`
+- `prompt`
+- `choices`
+- `answer`
+- `rule`
+- `errorCode`
+
+UNIT-specific fields stay separate:
+- UNIT 1: verb/connector count and slot judgment fields
+- UNIT 2: position/object/voice fields
+- UNIT 3: position/object/form fields
+- UNIT 4: define only after UNIT 4 author-method analysis
+
+Formal lineage:
+`source reference → author rule → derived practice → review → delayed review`
+
+Review and delayed-review linking uses `errorCode`; delayed-review cadence is intentionally not fixed yet.
+
+Public repository boundary:
+- source is reference-only
+- full textbook text is not stored
+- source-text style keys are rejected by the semantic validator
+
+## CI / deployment
+
+Workflow: `.github/workflows/pages.yml`
+
+Deployment gate order:
+1. Checkout
+2. JavaScript syntax check for `js/`, `data/`, `scripts/`
+3. Content contract semantic check
+4. Setup Pages
+5. Upload static site
+6. Deploy GitHub Pages
+
+## Still pending, non-blocking
 
 ### Phase 13B — physical-device visual confirmation
 
-Not yet claimed complete.
-
-Confirm on actual iPad / Galaxy Tab / PC when available:
+Needs actual iPad / Galaxy Tab / PC evidence when available:
 - typography scale and wrapping
-- card density and vertical whitespace
-- choice/button sizing
-- sticky action zone behavior
+- card density
+- button sizing
+- sticky action zone
 - scrolling burden
 - `JK·5S` identity strength
 
-If screenshots or device feedback are provided, refine only the affected visual layer.
+Do not block architecture/content expansion if screenshots are unavailable.
 
 ### Phase 14B — live interaction regression confirmation
 
-Code-level refactor and syntax/deployment verification are complete, but full browser interaction regression has not been claimed yet.
-
-Confirm:
+Needs live browser/device confirmation:
 - student PIN 8081 login
 - admin PIN 2007 login
-- UNIT 1 / UNIT 2 / UNIT 3 all visible on student home
-- each UNIT launches correctly
-- Home button returns to stable student home
-- progress bar/stage labels update
-- completion counters persist in localStorage
-- admin screen shows UNIT 1/2/3 completion counts
-- review mode still opens
+- UNIT 1~3 visible on student home
+- each UNIT launches
+- Home returns correctly
+- progress/stage labels update
+- localStorage completion counters persist
+- admin shows UNIT 1~3 counts
+- review mode opens
 
-If an actual browser/device regression is found, fix the common layer first without changing author-specific learning logic.
+If a live regression appears, fix the common Shell layer first without changing UNIT-specific author logic.
 
-### Phase 15 — finalize content/data contract before UNIT 4+
+## Next implementation phase
 
-Next architecture task after Phase 14B confidence is sufficient:
-- define shared item metadata
-- separate UNIT-specific author-decision fields
-- formalize source → author rule → derived practice → review → delayed review links
-- preserve Public-repository copyright boundary
-- avoid forcing every UNIT into one decision schema
+### Phase 16 — PART 1 / CHAPTER 1 / UNIT 4
 
-After Phase 15, expand PART 1 / CHAPTER 1 / UNIT 4.
+Topic: `접속사 + V-ing or p.p.`
+
+Order:
+1. analyze UNIT 4 author-method decision sequence
+2. define UNIT 4-specific `decisionSchema`
+3. promote UNIT 4 contract from planned to implemented
+4. create derived practice items without storing textbook full text
+5. implement UNIT 4 engine
+6. register UNIT 4 in common Shell
+7. pass syntax + semantic CI gates
+8. verify live browser flow as far as environment allows
 
 ## New-chat restoration sequence
 
 When user says `JK 5초 다음 작업 진행`:
+1. read latest `main`
+2. read `PROJECT_HANDOFF_LATEST.md`
+3. read `PROJECT_STATUS.md`
+4. read `VERSION`
+5. check latest GitHub Actions / Pages
+6. if physical-device evidence is unavailable, keep Phase 13B/14B pending and continue the next implementation phase
+7. start Phase 16 UNIT 4 work
 
-1. Read latest `main`
-2. Read `PROJECT_HANDOFF_LATEST.md`
-3. Read `PROJECT_STATUS.md`
-4. Read `VERSION`
-5. Check latest GitHub Actions / Pages status
-6. Start from the first unfinished work in this file
-
-If physical-device screenshots are unavailable, do not block on Phase 13B. Continue architecture work while keeping Phase 13B explicitly pending.
-
-Do not ask the user to re-upload backup ZIPs while GitHub access is working.
+Do not ask for backup ZIPs while GitHub access works.

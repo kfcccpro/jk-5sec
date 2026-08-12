@@ -31,7 +31,10 @@ jobs:
           while IFS= read -r -d '' file; do
             echo "Checking $file"
             node --check "$file"
-          done < <(find js data -type f -name '*.js' -print0)
+          done < <(find js data scripts -type f -name '*.js' -print0)
+
+      - name: Content contract check
+        run: node scripts/validate-content-contract.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
