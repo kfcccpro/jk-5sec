@@ -2,7 +2,7 @@
 
 ## Current version
 
-`v0.15.0-phase15-content-contract`
+`v0.16.0-phase16-unit4`
 
 ## Source of truth
 
@@ -13,157 +13,91 @@
 
 ## Completed
 
-- Phase 1: textbook philosophy analysis
-- Phase 2: UNIT 1 author-method analysis
-- Phase 3: responsive iPad/tablet/PC UI shell
-- Phase 4: student/admin PIN shell
-- Phase 5: GitHub Pages automatic deployment
-- Phase 6: UNIT 1 five-question learning loop
-- Phase 7: UNIT 2 learning loop
-- Phase 8: UNIT 3 learning loop
-- Phase 9: full textbook course map for review/navigation
-- Phase 10: review-only UI inspection mode expanded
-- Phase 11: result/admin/maintenance review architecture
-- Phase 12: `1001` visual language adapted to JK 5SEC
-- Phase 13A: review-width simulation and visual-density refinement
-- Phase 14A: common Shell compatibility layer and stable UNIT registry
-- Phase 14A CI: JavaScript syntax gate before GitHub Pages deployment
-- Phase 15: content/data contract finalized before UNIT 4+
-- Phase 15 CI: semantic content-contract gate added before deployment
+- Phase 1~14A: textbook method, UNIT 1~3, responsive UI, PIN shell, Pages deployment, review architecture, 1001 visual baseline, common Shell
+- Phase 15: shared + UNIT-specific content/data contract and semantic CI gate
+- Phase 16: PART 1 / CHAPTER 1 / UNIT 4 author-method analysis and 5-item learning loop
 
 ## Current learning content
 
 Implemented:
-- PART 1 / CHAPTER 1 / UNIT 1
-- PART 1 / CHAPTER 1 / UNIT 2
-- PART 1 / CHAPTER 1 / UNIT 3
+- UNIT 1: connector/relative-clause count → finite/nonfinite slot
+- UNIT 2: slot → object → active/passive for V-ing/p.p.
+- UNIT 3: slot → object relevance → p.p./be+p.p./active past
+- UNIT 4: conjunction-retained reduced clause → object shortcut → V-ing/p.p.; subject-relation fallback for intransitive cases
 
 Next textbook unit:
-- PART 1 / CHAPTER 1 / UNIT 4: `접속사 + V-ing or p.p.`
+- PART 1 / CHAPTER 1 / UNIT 5: `수동태 불가 동사`
 
-The repository is Public. Textbook full original text is not copied into GitHub.
+## Phase 16 UNIT 4
 
-## Phase 14 architecture baseline
+Files:
+- `js/unit4-data.js`
+- `js/unit4-engine.js`
+- `docs/PHASE16_UNIT4_ANALYSIS.md`
 
-Common layer: `js/phase14-common-shell.js`
+Interaction:
+`Cold Attempt → 축약 자리 → 목적어 확인 → V-ing/p.p. 판단 → 5초 Rule → 원문 재도전`
 
-Commonized:
-- UNIT registry
-- student home
-- admin home
-- learning Shell
-- primary action helper
-- progress helper
-- context block helper
+UNIT 4 contract fields:
+- `slotAnswer`
+- `objectAnswer`
+- `formAnswer`
+- `fallbackRequired`
 
-Not universalized:
-- UNIT-specific author decision logic
-- answer judgment logic
-- stage-specific evidence questions
+The five live items are derived practice, not copied textbook questions.
 
-Legacy UNIT 1/2/3 functions remain physically present for compatibility; the Phase 14 layer replaces duplicated home/Shell/helper bindings at runtime.
+## Content contract
 
-## Phase 15 content/data contract
+Machine-readable: `data/content-contract.js` version `1.1.0`
 
-Machine-readable contract:
-- `data/content-contract.js`
+Implemented collections: UNIT 1~4.
 
-Architecture document:
-- `docs/PHASE15_DATA_CONTRACT.md`
-
-Semantic validator:
-- `scripts/validate-content-contract.js`
-
-Shared item fields:
-- `id`
-- `prompt`
-- `choices`
-- `answer`
-- `rule`
-- `errorCode`
-
-UNIT-specific fields stay separate:
-- UNIT 1: verb/connector count and slot judgment fields
-- UNIT 2: position/object/voice fields
-- UNIT 3: position/object/form fields
-- UNIT 4: define only after UNIT 4 author-method analysis
-
-Formal lineage:
-`source reference → author rule → derived practice → review → delayed review`
-
-Review and delayed-review linking uses `errorCode`; delayed-review cadence is intentionally not fixed yet.
-
-Public repository boundary:
-- source is reference-only
-- full textbook text is not stored
-- source-text style keys are rejected by the semantic validator
+Semantic CI validates:
+- shared fields
+- UNIT-specific decision fields
+- IDs and answer/choice consistency
+- Public-repository source boundary
+- banned source-text storage keys
 
 ## CI / deployment
 
 Workflow: `.github/workflows/pages.yml`
 
-Deployment gate order:
-1. Checkout
-2. JavaScript syntax check for `js/`, `data/`, `scripts/`
-3. Content contract semantic check
-4. Setup Pages
-5. Upload static site
-6. Deploy GitHub Pages
+Deployment gates:
+1. JavaScript syntax check
+2. Content contract semantic check
+3. GitHub Pages deployment
 
 ## Still pending, non-blocking
 
 ### Phase 13B — physical-device visual confirmation
 
-Needs actual iPad / Galaxy Tab / PC evidence when available:
-- typography scale and wrapping
-- card density
-- button sizing
-- sticky action zone
-- scrolling burden
-- `JK·5S` identity strength
-
-Do not block architecture/content expansion if screenshots are unavailable.
+Needs actual iPad / Galaxy Tab / PC evidence when available. Do not block content expansion without screenshots.
 
 ### Phase 14B — live interaction regression confirmation
 
-Needs live browser/device confirmation:
-- student PIN 8081 login
-- admin PIN 2007 login
-- UNIT 1~3 visible on student home
-- each UNIT launches
-- Home returns correctly
-- progress/stage labels update
-- localStorage completion counters persist
-- admin shows UNIT 1~3 counts
-- review mode opens
-
-If a live regression appears, fix the common Shell layer first without changing UNIT-specific author logic.
+Still requires direct browser/device confirmation of PIN login, UNIT launches, Home navigation, progress labels, localStorage counters, admin counts, and review mode. If a regression appears, fix the common Shell before changing author-specific logic.
 
 ## Next implementation phase
 
-### Phase 16 — PART 1 / CHAPTER 1 / UNIT 4
+### Phase 17 — PART 1 / CHAPTER 1 / UNIT 5
 
-Topic: `접속사 + V-ing or p.p.`
+Topic: `수동태 불가 동사`
 
-Order:
-1. analyze UNIT 4 author-method decision sequence
-2. define UNIT 4-specific `decisionSchema`
-3. promote UNIT 4 contract from planned to implemented
-4. create derived practice items without storing textbook full text
-5. implement UNIT 4 engine
-6. register UNIT 4 in common Shell
-7. pass syntax + semantic CI gates
-8. verify live browser flow as far as environment allows
+Before implementation:
+1. inspect textbook UNIT 5 author-method rule and examples
+2. define UNIT 5-specific decision schema rather than copying UNIT 4 fields
+3. create derived practice only
+4. register UNIT 5 in common Shell
+5. pass syntax + semantic CI
 
 ## New-chat restoration sequence
 
 When user says `JK 5초 다음 작업 진행`:
 1. read latest `main`
-2. read `PROJECT_HANDOFF_LATEST.md`
-3. read `PROJECT_STATUS.md`
-4. read `VERSION`
-5. check latest GitHub Actions / Pages
-6. if physical-device evidence is unavailable, keep Phase 13B/14B pending and continue the next implementation phase
-7. start Phase 16 UNIT 4 work
+2. read handoff/status/version
+3. check latest Actions / Pages
+4. keep physical-device/live-browser confirmation explicitly pending if evidence is unavailable
+5. continue Phase 17 UNIT 5
 
-Do not ask for backup ZIPs while GitHub access works.
+Do not request backup ZIPs while GitHub access works.

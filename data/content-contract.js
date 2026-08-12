@@ -1,6 +1,6 @@
 (function attachContentContract(root) {
   root.JK_CONTENT_CONTRACT = {
-    version: "1.0.0",
+    version: "1.1.0",
     repositoryPolicy: {
       publicRepository: true,
       sourceTextStorage: "reference-only",
@@ -24,67 +24,32 @@
     },
     collections: {
       1: {
-        status: "implemented",
-        part: 1,
-        chapter: 1,
-        unit: 1,
-        globalName: "JK_UNIT1_ITEMS",
+        status: "implemented", part: 1, chapter: 1, unit: 1, globalName: "JK_UNIT1_ITEMS",
         authorRuleRef: "rule:p1-c1-u1-finite-verb-count",
         source: { ref: "textbook:p1-c1-u1", publicStorage: "reference-only", fullTextStored: false },
-        decisionSchema: {
-          tokens: "array",
-          finiteVerbIndices: "array",
-          connectorIndices: "array",
-          omittedConnector: "boolean",
-          decisionOptions: "array",
-          decisionAnswer: "string"
-        },
-        review: { keyFrom: "errorCode", mode: "derived-practice-family" },
-        delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
+        decisionSchema: { tokens: "array", finiteVerbIndices: "array", connectorIndices: "array", omittedConnector: "boolean", decisionOptions: "array", decisionAnswer: "string" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       },
       2: {
-        status: "implemented",
-        part: 1,
-        chapter: 1,
-        unit: 2,
-        globalName: "JK_UNIT2_ITEMS",
+        status: "implemented", part: 1, chapter: 1, unit: 2, globalName: "JK_UNIT2_ITEMS",
         authorRuleRef: "rule:p1-c1-u2-object-active-passive",
         source: { ref: "textbook:p1-c1-u2", publicStorage: "reference-only", fullTextStored: false },
-        decisionSchema: {
-          positionAnswer: "string",
-          objectAnswer: "string",
-          voiceAnswer: "string"
-        },
-        review: { keyFrom: "errorCode", mode: "derived-practice-family" },
-        delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
+        decisionSchema: { positionAnswer: "string", objectAnswer: "string", voiceAnswer: "string" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       },
       3: {
-        status: "implemented",
-        part: 1,
-        chapter: 1,
-        unit: 3,
-        globalName: "JK_UNIT3_ITEMS",
+        status: "implemented", part: 1, chapter: 1, unit: 3, globalName: "JK_UNIT3_ITEMS",
         authorRuleRef: "rule:p1-c1-u3-participle-vs-passive",
         source: { ref: "textbook:p1-c1-u3", publicStorage: "reference-only", fullTextStored: false },
-        decisionSchema: {
-          positionAnswer: "string",
-          objectAnswer: "string",
-          formAnswer: "string"
-        },
-        review: { keyFrom: "errorCode", mode: "derived-practice-family" },
-        delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
+        decisionSchema: { positionAnswer: "string", objectAnswer: "string", formAnswer: "string" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       },
       4: {
-        status: "planned",
-        part: 1,
-        chapter: 1,
-        unit: 4,
-        globalName: "JK_UNIT4_ITEMS",
-        authorRuleRef: "define-with-unit4-analysis",
+        status: "implemented", part: 1, chapter: 1, unit: 4, globalName: "JK_UNIT4_ITEMS",
+        authorRuleRef: "rule:p1-c1-u4-conjunction-reduced-participle",
         source: { ref: "textbook:p1-c1-u4", publicStorage: "reference-only", fullTextStored: false },
-        decisionSchema: null,
-        review: { keyFrom: "errorCode", mode: "define-with-unit4-analysis" },
-        delayedReview: { keyFrom: "errorCode", status: "define-with-unit4-analysis" }
+        decisionSchema: { slotAnswer: "string", objectAnswer: "string", formAnswer: "string", fallbackRequired: "boolean" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       }
     }
   };
