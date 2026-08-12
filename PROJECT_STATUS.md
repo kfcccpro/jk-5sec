@@ -2,7 +2,7 @@
 
 ## Current version
 
-`v0.12.0-review-theme`
+`v0.13.0-phase13-refinement`
 
 ## Source of truth
 
@@ -25,6 +25,7 @@
 - Phase 10: review-only UI inspection mode expanded
 - Phase 11: result/admin/maintenance review architecture
 - Phase 12: learner-preferred `1001` visual language analyzed and adapted to JK 5SEC
+- Phase 13A: code-level visual refinement and review-width simulation correction
 
 ## Current design baseline
 
@@ -45,8 +46,17 @@ JK-specific distinction:
 - author-method 5-second decision workflow
 - different course architecture and learning logic
 
-Primary override stylesheet:
+Primary theme stylesheet:
 - `css/theme-1001-inspired.css`
+
+Phase 13 refinement layer:
+- `css/phase13-refinement.css`
+
+Phase 13A changes:
+- `JK·5S` no longer repeats before every panel eyebrow; it is limited to screen-level brand positions.
+- duplicate `JK 5SEC` review-title badge removed.
+- learning card minimum height and line-height reduced to lower unnecessary vertical scrolling.
+- review viewport now uses CSS container queries so 768/1024-class preview widths trigger their own responsive layout rules even on a wide desktop browser.
 
 ## Actual learning content currently implemented
 
@@ -78,21 +88,26 @@ Widths:
 - 1366
 - 1440
 
+Important Phase 13 note:
+- Before v0.13.0, width preset buttons only changed the preview element width while ordinary viewport media queries still used the outer browser width. This made desktop review of 768px/1024px presets incomplete.
+- v0.13.0 adds container-query-based responsive review behavior for the preview itself.
+
 ## First unfinished phase
 
-### Phase 13 — real-device and review-mode visual refinement
+### Phase 13B — real-device visual confirmation
 
-Check:
-- typography scale
-- line-height
-- card height/density
-- vertical whitespace
+Code-level refinement is complete, but physical-device visual confirmation is not claimed yet.
+
+Confirm on actual iPad / Galaxy Tab / PC when available:
+- typography scale and wrapping
+- card density and vertical whitespace
 - choice/button sizing
+- sticky action zone behavior
 - scrolling burden
-- JK·5S identity strength
+- `JK·5S` identity strength
+- 768 / 1024 / 1180 / 1366 / 1440 review presets after the container-query correction
 
-Test widths:
-- 768 / 1024 / 1180 / 1366 / 1440
+If user sends screenshots or concrete device feedback, refine only the affected visual layer and keep the learning logic unchanged.
 
 ### Phase 14 — simplify common Shell and UNIT engine duplication
 
@@ -100,6 +115,7 @@ Goal:
 - reduce duplicated screen/storage/state code
 - preserve simple Vanilla JS architecture
 - avoid over-abstraction
+- audit UNIT 1/2/3 before changing behavior
 
 ### Phase 15 — finalize content/data contract before UNIT 4+
 
@@ -117,6 +133,8 @@ When user says `JK 5초 다음 작업 진행`:
 3. Read `PROJECT_STATUS.md`
 4. Read `VERSION`
 5. Check latest GitHub Actions / Pages status
-6. Start from Phase 13 unless status has since advanced
+6. Start from the first unfinished phase in this file
+
+Current first unfinished phase is Phase 13B. If no real-device screenshots/feedback are available, do not block: proceed with Phase 14 code audit while clearly keeping Phase 13B marked as pending physical-device confirmation.
 
 Do not ask the user to re-upload backup ZIPs while GitHub access is working.
