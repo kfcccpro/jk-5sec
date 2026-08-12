@@ -44,13 +44,14 @@ GitHub 연결이 정상이면 ZIP 재업로드나 과거 설명을 요구하지 
 ## 4. 현재 학습 콘텐츠
 
 완료:
-- PART 1 / CHAPTER 1 / UNIT 1
-- UNIT 2
-- UNIT 3
+- UNIT 1 `접속사·관계사 + 1 = 동사 개수`
+- UNIT 2 `~ing / ~ed`
+- UNIT 3 `~ed / be + ~ed`
 - UNIT 4 `접속사 + V-ing or p.p.`
+- UNIT 5 `수동태 불가 동사`
 
 다음:
-- UNIT 5 `수동태 불가 동사`
+- UNIT 6 `뒤에 두 개의 명사가 오는 수동태`
 
 ## 5. 공통 Shell
 
@@ -73,7 +74,7 @@ universal stage engine을 만들지 않는다.
 
 ## 6. Content contract
 
-`data/content-contract.js` version `1.1.0`
+`data/content-contract.js` version `1.2.0`
 
 공통 필드:
 - id / prompt / choices / answer / rule / errorCode
@@ -83,6 +84,7 @@ UNIT 고유 판단 필드:
 - UNIT 2: positionAnswer / objectAnswer / voiceAnswer
 - UNIT 3: positionAnswer / objectAnswer / formAnswer
 - UNIT 4: slotAnswer / objectAnswer / formAnswer / fallbackRequired
+- UNIT 5: targetVerb / groupAnswer / usageAnswer / formAnswer
 
 연결:
 `source reference → author rule → derived practice → review → delayed review`
@@ -92,20 +94,24 @@ Public 저장소 경계:
 - 교재 원문 전문 저장 금지
 - sourceText/fullText/verbatimText/textbookText 키 금지
 
-## 7. UNIT 4 저자식 판단
+## 7. UNIT 5 저자식 판단
 
-근거 분석 문서:
-- `docs/PHASE16_UNIT4_ANALYSIS.md`
+근거:
+- 업로드 교재 PART 1 / CHAPTER 1 / UNIT 5, 교재 p.26
+- 분석 문서: `docs/PHASE17_UNIT5_ANALYSIS.md`
 
-판단 순서:
-1. 접속사가 남은 축약구문 → 준동사 자리
-2. 타동사이면 바로 뒤 목적어 확인
-3. 목적어 있음 → 능동 V-ing
-4. 목적어 없음 → 수동 p.p. 우선
-5. 자동사·전치사 구조라 목적어 공식이 안 되면 주절 주어를 복원하여 능동/수동 관계 판단
+핵심:
+1. 일반 목적어 능동·수동 공식 전에 수동태 금지 동사인지 확인
+2. 자동사형 수동태 불가군은 be+p.p. 금지
+3. have/possess/hold(소유)/resemble 같은 일부 타동사는 목적어가 있어도 수동태 금지
+4. see/increase/decrease/read/peel 같은 문맥 의존 동사는 자·타 용법을 먼저 확인
+5. 문맥상 타동사 용법이면 일반 수동태가 가능할 수 있음
 
-실제 앱 루프:
-`Cold Attempt → 축약 자리 → 목적어 확인 → V-ing/p.p. 판단 → 5초 Rule → 원문 재도전`
+앱 판단 순서:
+`동사 부류 → 자·타 용법 → 수동태 가능 여부`
+
+실제 루프:
+`Cold Attempt → 동사 부류 → 자·타 용법 → 수동태 가능 여부 → 5초 Rule → 원문 재도전`
 
 교재 확인문제 문장은 Public GitHub에 복제하지 않고 파생 연습문항 5개만 구현했다.
 
@@ -131,16 +137,16 @@ Phase 13B physical-device visual confirmation과 Phase 14B live interaction regr
 
 ## 10. 다음 구현 단계
 
-### Phase 17 — UNIT 5 `수동태 불가 동사`
+### Phase 18 — UNIT 6 `뒤에 두 개의 명사가 오는 수동태`
 
-1. 교재 UNIT 5의 저자식 판정 규칙 분석
-2. UNIT 5 전용 decisionSchema 정의
+1. 교재 UNIT 6 저자식 판정 규칙 분석
+2. UNIT 6 전용 decisionSchema 정의
 3. 파생 연습문항 작성
-4. UNIT 5 엔진 구현
+4. UNIT 6 엔진 구현
 5. 공통 Shell 등록
 6. syntax + semantic CI 통과
 7. 가능한 브라우저 회귀 확인
 
 ## 11. 새 채팅 행동 규칙
 
-사용자가 `JK 5초 다음 작업 진행`이라고 입력하면 최신 main/handoff/status/version/actions를 대조한 뒤 Phase 17부터 진행한다. 실제 기기 자료가 없다는 이유로 멈추지 않는다.
+사용자가 `JK 5초 다음 작업 진행`이라고 입력하면 최신 main/handoff/status/version/actions를 대조한 뒤 Phase 18부터 진행한다. 실제 기기 자료가 없다는 이유로 멈추지 않는다.

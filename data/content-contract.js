@@ -1,6 +1,6 @@
 (function attachContentContract(root) {
   root.JK_CONTENT_CONTRACT = {
-    version: "1.1.0",
+    version: "1.2.0",
     repositoryPolicy: {
       publicRepository: true,
       sourceTextStorage: "reference-only",
@@ -49,6 +49,13 @@
         authorRuleRef: "rule:p1-c1-u4-conjunction-reduced-participle",
         source: { ref: "textbook:p1-c1-u4", publicStorage: "reference-only", fullTextStored: false },
         decisionSchema: { slotAnswer: "string", objectAnswer: "string", formAnswer: "string", fallbackRequired: "boolean" },
+        review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
+      },
+      5: {
+        status: "implemented", part: 1, chapter: 1, unit: 5, globalName: "JK_UNIT5_ITEMS",
+        authorRuleRef: "rule:p1-c1-u5-passive-impossible-verbs",
+        source: { ref: "textbook:p1-c1-u5:p26", publicStorage: "reference-only", fullTextStored: false },
+        decisionSchema: { targetVerb: "string", groupAnswer: "string", usageAnswer: "string", formAnswer: "string" },
         review: { keyFrom: "errorCode", mode: "derived-practice-family" }, delayedReview: { keyFrom: "errorCode", status: "contract-defined-not-scheduled" }
       }
     }
