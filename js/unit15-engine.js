@@ -1,0 +1,6 @@
+JK_createDecisionUnit({runtimeId:15,itemsGlobal:'JK_UNIT15_ITEMS',badge:'PART 1 · CH 4 · UNIT 2',shortLabel:'CH 4 · UNIT 2',answerTitle:'명사가 동사에 직접 붙는지부터 보고 답을 고르세요.',ruleHeadline:'명사 연결 방식 → 자동사·타동사 → 전치사',stableText:'목적어 연결 구조를 안정적으로 판정했습니다.',repairText:'명사가 동사에 직접 붙는지부터 다시 확인합니다.',steps:[
+{key:'verb',label:'핵심 동사',title:'판정할 핵심 동사는 무엇입니까?',targetField:'targetVerb',options:['discuss','reach','arrive','listen','resemble'].map(v=>({value:v,label:v}))},
+{key:'objectRoute',label:'목적어 연결',title:'명사는 동사에 직접 붙습니까, 전치사를 거칩니까?',targetField:'objectRouteAnswer',options:[{value:'direct',label:'동사 + 명사 목적어'},{value:'preposition',label:'동사 + 전치사 + 명사'}]},
+{key:'transitivity',label:'자동사·타동사',title:'이 동사는 자동사입니까, 타동사입니까?',targetField:'transitivityAnswer',options:[{value:'intransitive',label:'자동사'},{value:'transitive',label:'타동사'}]},
+{key:'preposition',label:'전치사 판정',title:'명사 앞 전치사는 필요합니까?',targetField:'prepositionAnswer',last:true,options:[{value:'none',label:'불필요 · 목적어 직접'},{value:'required',label:'필요 · 전치사로 연결'}]}
+]});
