@@ -1,0 +1,6 @@
+JK_createDecisionUnit({runtimeId:16,itemsGlobal:'JK_UNIT16_ITEMS',badge:'PART 1 · CH 5',shortLabel:'CH 5 감정동사',answerTitle:'감정의 원인인지 경험자인지 보고 답을 고르세요.',ruleHeadline:'감정의 원인 → V-ing / 감정의 경험자 → p.p.',stableText:'감정의 방향과 형태를 안정적으로 연결했습니다.',repairText:'사람/사물보다 감정을 일으키는지 느끼는지를 먼저 봅니다.',steps:[
+{key:'verb',label:'감정동사',title:'기준이 되는 감정동사는 무엇입니까?',targetField:'emotionVerb',options:['move','surprise','frustrate','bore'].map(v=>({value:v,label:v}))},
+{key:'role',label:'감정의 원인·경험자',title:'대상은 감정을 일으킵니까, 감정을 느낍니까?',targetField:'targetRoleAnswer',options:[{value:'causer',label:'감정을 일으키는 원인'},{value:'experiencer',label:'감정을 느끼는 경험자'}]},
+{key:'position',label:'문장 자리',title:'현재 형태가 쓰이는 자리는 무엇입니까?',targetField:'positionAnswer',options:[{value:'subjectComplement',label:'주격보어'},{value:'modifier',label:'명사 수식'},{value:'objectComplement',label:'목적격보어'}]},
+{key:'form',label:'V-ing · p.p.',title:'감정 관계에 맞는 형태는 무엇입니까?',targetField:'formAnswer',last:true,options:[{value:'ing',label:'V-ing · 감정을 일으킴'},{value:'pp',label:'p.p. · 감정을 느낌'}]}
+]});
