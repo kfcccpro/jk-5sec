@@ -1,0 +1,6 @@
+JK_createDecisionUnit({runtimeId:20,itemsGlobal:'JK_UNIT20_ITEMS',badge:'PART 2 · CH 1 · UNIT 4',shortLabel:'PART 2 · CH 1 · UNIT 4',answerTitle:'본동사와 목적어 사이 구조를 확인하고 답을 고르세요.',ruleHeadline:'본동사 → O 확인 → 목적격 보어 → to-V',stableText:'O + to-V 목적격보어 구조를 안정적으로 판정했습니다.',repairText:'UNIT 2의 「동사 + to-V 목적어」와 달리, UNIT 4는 본동사와 to-V 사이에 목적어 O가 있는지 먼저 확인합니다.',steps:[
+{key:'verb',label:'본동사',title:'목적격 보어 형태를 결정하는 본동사는 무엇입니까?',targetField:'targetVerb',options:i=>i.verbOptions},
+{key:'objectBridge',label:'목적어 확인',title:'본동사와 to-V 사이에 사람·대상 목적어가 있습니까?',targetField:'objectBridgeAnswer',options:[{value:'yes',label:'있다'},{value:'no',label:'없다'}]},
+{key:'role',label:'문장 역할',title:'이 자리의 to-V는 무엇 역할입니까?',targetField:'roleAnswer',options:[{value:'objectComplement',label:'목적격 보어'},{value:'directObject',label:'목적어'}]},
+{key:'form',label:'최종 형태',title:'교재 기준으로 목적격 보어의 최종 형태를 고르세요.',targetField:'formAnswer',last:true,options:[{value:'toInfinitive',label:'to-V'},{value:'bareInfinitive',label:'동사원형'},{value:'gerund',label:'V-ing'}]}
+]});
