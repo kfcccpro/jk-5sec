@@ -1,0 +1,6 @@
+JK_createDecisionUnit({runtimeId:17,itemsGlobal:'JK_UNIT17_ITEMS',badge:'PART 2 · CH 1 · UNIT 1',shortLabel:'PART 2 · CH 1 · UNIT 1',answerTitle:'본동사 자리인지부터 보고 답을 고르세요.',ruleHeadline:'본동사 유무 → 자리 → 역할 → 형태',stableText:'본동사/준동사 자리를 안정적으로 판정했습니다.',repairText:'to-V를 보기 전에 문장에 본동사가 이미 있는지부터 확인합니다.',steps:[
+{key:'finiteCheck',label:'본동사 확인',title:'빈칸을 제외하고 문장에 본동사가 이미 있습니까?',targetField:'existingFiniteAnswer',options:[{value:'yes',label:'있다'},{value:'no',label:'없다'}]},
+{key:'slot',label:'본동사·준동사 자리',title:'빈칸은 본동사 자리입니까, 준동사 자리입니까?',targetField:'slotAnswer',options:[{value:'finite',label:'본동사 자리'},{value:'nonfinite',label:'준동사 자리'}]},
+{key:'role',label:'to부정사 역할',title:'이 자리의 문장 역할은 무엇입니까?',targetField:'roleAnswer',options:[{value:'finiteVerb',label:'본동사'},{value:'noun',label:'명사 역할'},{value:'adjective',label:'형용사 역할'},{value:'adverb',label:'부사 역할'}]},
+{key:'form',label:'최종 형태',title:'최종 형태를 고르세요.',targetField:'formAnswer',last:true,options:[{value:'finiteForm',label:'시제·수일치를 갖춘 본동사'},{value:'toInfinitive',label:'to-V'}]}
+]});
