@@ -26,26 +26,27 @@ GitHub 연결이 정상이면 ZIP 재업로드나 과거 설명을 요구하지 
 완료:
 - PART 1 / CHAPTER 1 / UNIT 1~7
 - PART 1 / CHAPTER 2 / UNIT 1~4
+- PART 1 / CHAPTER 3 / UNIT 1
 - 각 lesson 파생문항 5개
-- 현재 총 55문항
+- 현재 총 60문항
 
 다음:
-- PART 1 / CHAPTER 3 / UNIT 1 `사역동사 / 지각동사`
+- PART 1 / CHAPTER 3 / UNIT 2 `make 출제 유형`
 
-## 3. CHAPTER 2 · UNIT 4 저자식 판단
+## 3. CHAPTER 3 · UNIT 1 저자식 판단
 
-근거: 교재 PART 1 / CHAPTER 2 / UNIT 4, p.34.
-분석 문서: `docs/PHASE23_CH2_UNIT4_ANALYSIS.md`
+근거: 교재 PART 1 / CHAPTER 3 / UNIT 1, p.35.
+분석 문서: `docs/PHASE24_CH3_UNIT1_ANALYSIS.md`
 
 핵심:
-1. 감각동사 = feel / look / smell / sound / taste
-2. 주어의 상태·인상을 이어 주면 2형식 연결동사
-3. 뒤는 주격보어 자리
-4. 주격보어에는 형용사를 사용
-5. 형용사와 -ly 부사가 경쟁하면 형용사를 선택
+1. 사역동사: make / have / let
+2. 준사역동사: get / help
+3. 지각동사: see / watch / hear / touch / listen to 등
+4. O-O.C가 능동이면 동사 종류에 따라 동사원형 / to-V / 동사원형·to-V / 동사원형·V-ing로 분기
+5. O-O.C가 수동이면 앞 동사 종류와 관계없이 p.p.
 
 앱 루프:
-`Cold Attempt → 감각동사 확인 → 2형식 판정 → 주격보어 확인 → 형용사/부사 판정 → 5초 Rule → 원문 재도전`
+`Cold Attempt → 핵심 동사 → 동사 종류 → O-O.C 관계 → 목적격보어 형태 → 5초 Rule → 원문 재도전`
 
 교재 예문은 Public GitHub에 복제하지 않고 파생 연습문항만 구현한다.
 
@@ -56,18 +57,19 @@ GitHub 연결이 정상이면 ZIP 재업로드나 과거 설명을 요구하지 
 - runtime 9 = P1 / CH2 / U2
 - runtime 10 = P1 / CH2 / U3
 - runtime 11 = P1 / CH2 / U4
+- runtime 12 = P1 / CH3 / U1
 
 화면에서는 runtime ID가 아니라 실제 교재 계층을 표시한다.
 
 ## 5. Content contract
 
-`data/content-contract.js` version `1.8.0`
+`data/content-contract.js` version `1.9.0`
 
-CH 2 · UNIT 4 fields:
-- `sensoryVerb`
-- `linkingAnswer`
-- `complementRoleAnswer`
-- `formAnswer`
+CH 3 · UNIT 1 fields:
+- `targetVerb`
+- `familyAnswer`
+- `relationAnswer`
+- `complementFormAnswer`
 
 collection key는 runtime lesson ID, collection의 `part/chapter/unit`은 실제 교재 구조다.
 Public 저장소는 source reference-only이며 교재 원문 전문 및 `sourceText/fullText/verbatimText/textbookText` 저장을 금지한다.
@@ -89,15 +91,15 @@ Phase 13B physical-device visual confirmation과 Phase 14B live interaction regr
 
 ## 8. 다음 단계
 
-### Phase 24 — PART 1 / CHAPTER 3 / UNIT 1
+### Phase 25 — PART 1 / CHAPTER 3 / UNIT 2
 
-Topic: `사역동사 / 지각동사`
+Topic: `make 출제 유형`
 
-1. 교재 p.35 저자식 판정 규칙 분석
+1. 교재 p.37 저자식 판정 규칙 분석
 2. 전용 decisionSchema 정의
 3. 파생 연습문항 작성
-4. runtime lesson 12 엔진 구현
-5. CH 3 · UNIT 1 공통 Shell 등록
+4. runtime lesson 13 엔진 구현
+5. CH 3 · UNIT 2 공통 Shell 등록
 6. syntax + semantic CI 통과
 
-사용자가 `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, 또는 `진행`이라고 입력하면 최신 main/handoff/status/version/actions를 확인한 뒤 Phase 24부터 진행한다.
+사용자가 `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, 또는 `진행`이라고 입력하면 최신 main/handoff/status/version/actions를 확인한 뒤 Phase 25부터 진행한다.

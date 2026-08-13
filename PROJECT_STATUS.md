@@ -2,7 +2,7 @@
 
 ## Current version
 
-`v0.23.0-phase23-ch2-unit4`
+`v0.24.0-phase24-ch3-unit1`
 
 ## Source of truth
 
@@ -17,27 +17,30 @@
 - Phase 15: shared + UNIT-specific content/data contract and semantic CI gate
 - Phase 16~19: PART 1 / CHAPTER 1 expansion through UNIT 7
 - Phase 20~23: PART 1 / CHAPTER 2 UNIT 1~4 complete
+- Phase 24: PART 1 / CHAPTER 3 / UNIT 1 `사역동사 / 지각동사`
 
 ## Current learning content
 
 - PART 1 / CHAPTER 1: UNIT 1~7 implemented
 - PART 1 / CHAPTER 2: UNIT 1~4 implemented
+- PART 1 / CHAPTER 3: UNIT 1 implemented
 - Five derived items per lesson
-- Total: 55 items
+- Total: 60 items
 
-CH 2 · UNIT 4 interaction:
-`Cold Attempt → 감각동사 확인 → 2형식 판정 → 주격보어 확인 → 형용사/부사 판정 → 5초 Rule → 원문 재도전`
+CH 3 · UNIT 1 interaction:
+`Cold Attempt → 핵심 동사 → 동사 종류 → O-O.C 관계 → 목적격보어 형태 → 5초 Rule → 원문 재도전`
 
 Author-method summary:
-- 감각동사: feel / look / smell / sound / taste
-- 감각동사가 주어의 상태·인상을 이어 주면 2형식
-- 뒤는 주격보어 자리
-- 주격보어에는 부사가 아니라 형용사를 사용
+- 사역동사 make/have/let + 능동 O-O.C → 동사원형
+- get + 능동 O-O.C → to-V
+- help + 능동 O-O.C → 동사원형 또는 to-V
+- 지각동사 + 능동 O-O.C → 동사원형 또는 V-ing
+- O-O.C가 수동관계이면 앞 동사 종류와 관계없이 p.p.
 
 Files:
-- `js/unit11-data.js`
-- `js/unit11-engine.js`
-- `docs/PHASE23_CH2_UNIT4_ANALYSIS.md`
+- `js/unit12-data.js`
+- `js/unit12-engine.js`
+- `docs/PHASE24_CH3_UNIT1_ANALYSIS.md`
 
 ## Runtime mapping
 
@@ -48,18 +51,19 @@ Runtime lesson IDs remain globally sequential for localStorage compatibility.
 - runtime 9 = PART 1 / CHAPTER 2 / UNIT 2
 - runtime 10 = PART 1 / CHAPTER 2 / UNIT 3
 - runtime 11 = PART 1 / CHAPTER 2 / UNIT 4
+- runtime 12 = PART 1 / CHAPTER 3 / UNIT 1
 
 ## Content contract
 
-`data/content-contract.js` version `1.8.0`
+`data/content-contract.js` version `1.9.0`
 
-CH 2 · UNIT 4 fields:
-- `sensoryVerb`
-- `linkingAnswer`
-- `complementRoleAnswer`
-- `formAnswer`
+CH 3 · UNIT 1 fields:
+- `targetVerb`
+- `familyAnswer`
+- `relationAnswer`
+- `complementFormAnswer`
 
-Semantic CI validates 55 items across 11 implemented lessons and keeps public-source storage reference-only.
+Semantic CI validates 60 items across 12 implemented lessons and keeps public-source storage reference-only.
 
 ## Still pending, non-blocking
 
@@ -68,16 +72,16 @@ Semantic CI validates 55 items across 11 implemented lessons and keeps public-so
 
 ## Next implementation phase
 
-### Phase 24 — PART 1 / CHAPTER 3 / UNIT 1
+### Phase 25 — PART 1 / CHAPTER 3 / UNIT 2
 
-Topic: `사역동사 / 지각동사`
+Topic: `make 출제 유형`
 
 Order:
-1. inspect textbook CH 3 UNIT 1 p.35 author-method rule
+1. inspect textbook CH 3 UNIT 2 p.37 author-method rule
 2. define UNIT-specific decision schema
 3. create derived practice only
-4. implement runtime lesson 12 engine
-5. register CH 3 · UNIT 1 in common Shell
+4. implement runtime lesson 13 engine
+5. register CH 3 · UNIT 2 in common Shell
 6. pass syntax + semantic CI
 
-When the user says `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, or `진행`, continue Phase 24 from latest `main` without requesting a ZIP while GitHub access works.
+When the user says `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, or `진행`, continue Phase 25 from latest `main` without requesting a ZIP while GitHub access works.
