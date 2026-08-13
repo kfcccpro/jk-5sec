@@ -24,11 +24,14 @@ load("js/unit10-data.js");
 load("js/unit11-data.js");
 load("js/unit12-data.js");
 load("js/unit13-data.js");
+load("js/unit14-data.js");
 
 const contract = global.JK_CONTENT_CONTRACT;
 const errors = [];
 const ids = new Set();
 const bannedSourceKeys = new Set(["sourceText", "fullText", "verbatimText", "textbookText"]);
+const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const shellSource = fs.readFileSync(path.join(root, "js/phase14-common-shell.js"), "utf8");
 
 function typeMatches(value, expected) {
   if (expected === "array") return Array.isArray(value);
@@ -45,7 +48,7 @@ function scanBannedKeys(value, pathLabel) {
   });
 }
 
-if (!contract || contract.version !== "2.0.0") errors.push("content contract version 2.0.0 is required");
+if (!contract || contract.version !== "2.1.0") errors.push("content contract version 2.1.0 is required");
 if (contract?.repositoryPolicy?.sourceTextStorage !== "reference-only") errors.push("sourceTextStorage must stay reference-only");
 if (contract?.repositoryPolicy?.fullTextAllowed !== false) errors.push("fullTextAllowed must stay false in the public repository");
 scanBannedKeys(contract, "contract");
@@ -75,6 +78,17 @@ Object.entries(contract.collections).filter(([, collection]) => collection.statu
     if (Array.isArray(item.choices) && !item.choices.includes(item.answer)) errors.push(`${label}: answer must be one of choices`);
     scanBannedKeys(item, label);
   });
+
+  const registryToken = `{ id: ${runtimeUnit},`;
+  if (!shellSource.includes(registryToken)) errors.push(`${scope}: common Shell registry is missing runtime ${runtimeUnit}`);
+  if (runtimeUnit === 1) {
+    if (!shellSource.includes("start: startLearning")) errors.push(`${scope}: common Shell startLearning registration is missing`);
+    if (!indexHtml.includes("./js/unit1-data.js") || !indexHtml.includes("./js/app.js")) errors.push(`${scope}: index loading is incomplete`);
+  } else {
+    if (!shellSource.includes(`start: startUnit${runtimeUnit}`)) errors.push(`${scope}: common Shell startUnit${runtimeUnit} registration is missing`);
+    if (!shellSource.includes(`renderUnit${runtimeUnit}Shell =`)) errors.push(`${scope}: common Shell adapter for runtime ${runtimeUnit} is missing`);
+    if (!indexHtml.includes(`./js/unit${runtimeUnit}-data.js`) || !indexHtml.includes(`./js/unit${runtimeUnit}-engine.js`)) errors.push(`${scope}: index loading for runtime ${runtimeUnit} is incomplete`);
+  }
 });
 
 if (errors.length) {
@@ -84,4 +98,4 @@ if (errors.length) {
 }
 
 const implementedCount = Object.values(contract.collections).filter(collection => collection.status === "implemented").length;
-console.log(`CONTENT CONTRACT CHECK PASS: ${ids.size} items across ${implementedCount} implemented lessons`);
+console.log(`CONTENT CONTRACT CHECK PASS: ${ids.size} items across ${implementedCount} implemented lessons; Shell/index integration verified`);

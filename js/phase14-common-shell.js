@@ -12,7 +12,8 @@
     { id: 10, part: 1, chapter: 2, unit: 3, chapterLabel: "CH 2 · UNIT 3", focus: "M·T·B·F·C · it + 형용사 + to-V/that 판정", itemCount: unit10Items.length || 5, start: startUnit10, runKey: "unit10Runs" },
     { id: 11, part: 1, chapter: 2, unit: 4, chapterLabel: "CH 2 · UNIT 4", focus: "감각동사 · 2형식 보어는 형용사", itemCount: unit11Items.length || 5, start: startUnit11, runKey: "unit11Runs" },
     { id: 12, part: 1, chapter: 3, unit: 1, chapterLabel: "CH 3 · UNIT 1", focus: "사역·준사역·지각 · O-O.C 관계로 보어 형태 판정", itemCount: unit12Items.length || 5, start: startUnit12, runKey: "unit12Runs" },
-    { id: 13, part: 1, chapter: 3, unit: 2, chapterLabel: "CH 3 · UNIT 2", focus: "make 출제 유형 · it / 원형 / 형용사 / 수동 to-V", itemCount: unit13Items.length || 5, start: startUnit13, runKey: "unit13Runs" }
+    { id: 13, part: 1, chapter: 3, unit: 2, chapterLabel: "CH 3 · UNIT 2", focus: "make 출제 유형 · it / 원형 / 형용사 / 수동 to-V", itemCount: unit13Items.length || 5, start: startUnit13, runKey: "unit13Runs" },
+    { id: 14, part: 1, chapter: 4, unit: 1, chapterLabel: "CH 4 · UNIT 1", focus: "자동사·타동사 혼동쌍 · 의미와 변화형 함께 판정", itemCount: unit14Items.length || 5, start: startUnit14, runKey: "unit14Runs" }
   ];
 
   function nextPendingLabel() {
@@ -44,7 +45,7 @@
     const accuracy = store.attempts ? Math.round((store.correctFirst / store.attempts) * 100) : 0;
     const current = currentRegistryUnit();
     const runRows = unitRegistry.map(unit => `<div class="admin-row"><strong>${unit.chapterLabel} 완료 횟수</strong><span>${store[unit.runKey] || 0}</span></div>`).join("");
-    app.innerHTML = `<div class="screen">${shellHeader("학습 관리", "관리자")}<main class="dashboard-grid"><section class="panel"><p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2><div class="metric-grid"><div class="metric"><span class="metric-label">전체 문항 시도</span><strong>${store.attempts}</strong></div><div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div><div class="metric"><span class="metric-label">미해결</span><strong>${store.unresolved}</strong></div></div><div class="admin-list"><div class="admin-row"><strong>현재 진도</strong><span>PART ${current.part} · ${current.chapterLabel}</span></div><div class="admin-row"><strong>최근 판정</strong><span>${store.lastStatus}</span></div>${runRows}<div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div></div></section><aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>현재 콘텐츠</h2><p class="panel-copy">PART 1 · CHAPTER 1 UNIT 1~7, CHAPTER 2 UNIT 1~4, CHAPTER 3 UNIT 1~2 학습 루프를 사용할 수 있습니다.</p><div class="rule-box"><strong>운영 원칙</strong><p>진도·정확도·교정 상태만 간단히 확인합니다.</p></div></aside></main></div>`;
+    app.innerHTML = `<div class="screen">${shellHeader("학습 관리", "관리자")}<main class="dashboard-grid"><section class="panel"><p class="eyebrow">OVERVIEW</p><h2>학생 학습 현황</h2><div class="metric-grid"><div class="metric"><span class="metric-label">전체 문항 시도</span><strong>${store.attempts}</strong></div><div class="metric"><span class="metric-label">최초 정답률</span><strong>${accuracy}%</strong></div><div class="metric"><span class="metric-label">미해결</span><strong>${store.unresolved}</strong></div></div><div class="admin-list"><div class="admin-row"><strong>현재 진도</strong><span>PART ${current.part} · ${current.chapterLabel}</span></div><div class="admin-row"><strong>최근 판정</strong><span>${store.lastStatus}</span></div>${runRows}<div class="admin-row"><strong>오늘 기록 시간</strong><span>${store.minutesToday}분</span></div></div></section><aside class="panel"><p class="eyebrow">SIMPLE ADMIN</p><h2>현재 콘텐츠</h2><p class="panel-copy">PART 1 · CHAPTER 1 UNIT 1~7, CHAPTER 2 UNIT 1~4, CHAPTER 3 UNIT 1~2, CHAPTER 4 UNIT 1 학습 루프를 사용할 수 있습니다.</p><div class="rule-box"><strong>운영 원칙</strong><p>진도·정확도·교정 상태만 간단히 확인합니다.</p></div></aside></main></div>`;
     bindLogout();
   }
 
@@ -136,6 +137,11 @@
   setUnit13Primary = setPrimaryAction;
   updateUnit13Progress = () => updateLearningProgress({ sessionState: unit13Session, itemCount: unit13Items.length, labels: unit13Labels, currentStageName: currentUnit13Stage() });
   unit13ContextHtml = () => renderContextBlock({ prompt: currentUnit13Item().prompt, itemIndex: unit13Session.itemIndex, initialAnswer: unit13Session.initialAnswer, showChoice: Boolean(unit13Session.initialAnswer) });
+
+  renderUnit14Shell = () => renderCommonLearningShell({ unitBadge: "PART 1 · CH 4 · UNIT 1", onPrimary: handleUnit14Primary });
+  setUnit14Primary = setPrimaryAction;
+  updateUnit14Progress = () => updateLearningProgress({ sessionState: unit14Session, itemCount: unit14Items.length, labels: unit14Labels, currentStageName: currentUnit14Stage() });
+  unit14ContextHtml = () => renderContextBlock({ prompt: currentUnit14Item().prompt, itemIndex: unit14Session.itemIndex, initialAnswer: unit14Session.initialAnswer, showChoice: Boolean(unit14Session.initialAnswer) });
 
   window.JKCommonShell = { units: unitRegistry.map(({ id, part, chapter, unit, chapterLabel, focus, itemCount, runKey }) => ({ id, part, chapter, unit, chapterLabel, focus, itemCount, runKey })), renderLearningShell: renderCommonLearningShell, setPrimaryAction, updateLearningProgress, renderContextBlock };
 })();
