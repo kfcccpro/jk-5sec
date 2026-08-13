@@ -23,6 +23,7 @@ load("js/unit9-data.js");
 load("js/unit10-data.js");
 load("js/unit11-data.js");
 load("js/unit12-data.js");
+load("js/unit13-data.js");
 
 const contract = global.JK_CONTENT_CONTRACT;
 const errors = [];
@@ -44,7 +45,7 @@ function scanBannedKeys(value, pathLabel) {
   });
 }
 
-if (!contract || contract.version !== "1.9.0") errors.push("content contract version 1.9.0 is required");
+if (!contract || contract.version !== "2.0.0") errors.push("content contract version 2.0.0 is required");
 if (contract?.repositoryPolicy?.sourceTextStorage !== "reference-only") errors.push("sourceTextStorage must stay reference-only");
 if (contract?.repositoryPolicy?.fullTextAllowed !== false) errors.push("fullTextAllowed must stay false in the public repository");
 scanBannedKeys(contract, "contract");
