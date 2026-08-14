@@ -1,61 +1,46 @@
 # JK 5SEC Grammar — PROJECT STATUS
 
-## Current version
-`v0.32.0-phase32-p2-ch1-unit4`
+## Current integration version
+`v0.92.0-phase92-full-content`
 
 ## Source of truth
 - Repository: `kfcccpro/jk-5sec`
-- Branch: `main`
+- Integration branch: `phase92-full-content-integration`
+- Base main SHA before integration: `a4b1bddbef7eddbce2923c103a3d5e77bdd214cc`
 - General app: `https://kfcccpro.github.io/jk-5sec/`
 - Review mode: `https://kfcccpro.github.io/jk-5sec/?review=1`
 
-## Completed
-- Phase 1~29: baseline through PART 2 / CHAPTER 1 / UNIT 1
-- Phase 30: PART 2 / CHAPTER 1 / UNIT 2 `목적으로 to부정사만을 취하는 타동사`
-- Phase 31: PART 2 / CHAPTER 1 / UNIT 3 `to부정사의 숙어 표현`
-- Phase 32: PART 2 / CHAPTER 1 / UNIT 4 `목적격 보어로 to부정사만을 취하는 동사`
-
-## Current learning content
-- Runtime lessons: 20
-- Five derived items per lesson
-- Total: 100 derived items
-- Public repository source policy remains reference-only.
-
-### Phase 30 loop
-`Cold Attempt → 본동사 → 목록 확인 → 목적어 역할 → to-V → 5초 Rule → 재도전`
-
-### Phase 31 loop
-`Cold Attempt → 숙어 표현 → 숙어 의미 → 동사 + to-V 패턴 → to-V → 5초 Rule → 재도전`
-
-### Phase 32 loop
-`Cold Attempt → 본동사 → 목적어 O 확인 → 목적격 보어 역할 → to-V → 5초 Rule → 재도전`
-
-## Runtime mapping added
-- runtime 18 = P2 / CH1 / U2
-- runtime 19 = P2 / CH1 / U3
-- runtime 20 = P2 / CH1 / U4
+## Content complete
+- PART 1~10 implemented.
+- Runtime lessons: 79.
+- Derived practice items: 405.
+- Existing runtime 1~20 remains file-based.
+- Deferred runtime 21~79 is integrated through a validated gzip/base64 9-chunk loader.
+- PART 10 uses newly derived mixed assessments rather than copied recent-exam/source questions.
 
 ## Content contract
-`data/content-contract.js` version `2.7.0`
+- Base contract extended to version `9.0.0`.
+- Runtime 21~79 metadata is in `data/runtime-meta-21-79.js`.
+- Source text storage policy remains `reference-only`; textbook full text is not stored in practice data.
+- Semantic CI validates all 405 items across 79 implemented lessons, runtime IDs, answer/choices consistency, source boundary and Phase 92 shell/index integration.
 
-Semantic CI validates 100 items across 20 implemented lessons and verifies source boundary, item schema, runtime ID prefix, answer/choices consistency, common Shell registry/start/adapters, and index loading.
+## Phase 90~92
+- Phase 90: PART 10 recent-exam-style derived mixed assessment, runtime 78, 10 items.
+- Phase 91: PART 10 consolidation/high-transfer derived mixed assessment, runtime 79, 10 items.
+- Phase 92: answer-map cross-check, full local content QA and GitHub integration.
 
-## Key distinction preserved
-- UNIT 2: `V + to-V` — to-V is the object.
-- UNIT 3: lexical/idiomatic `V + to-V` meaning bundle.
-- UNIT 4: `V + O + to-V` — to-V is the object complement.
+## Integration architecture
+- `js/phase92-loader.js` fetches nine bundle chunks and expands runtime 21~79.
+- `js/phase92-registry-extension.js` registers runtime 21~79 in the common shell after the bundle is ready.
+- Student/admin home exposes PART 1~10 and reports 79 lessons / 405 derived items.
 
-## Still pending, non-blocking
-- Phase 13B: physical-device visual confirmation
-- Phase 14B: live interaction regression confirmation
+## Still pending, non-blocking until evidence is collected
+- Phase 13B: physical-device visual confirmation.
+- Phase 14B: live interaction regression confirmation.
 
-## Next implementation phase
-### Phase 33 — PART 2 / CHAPTER 1 / UNIT 5
-Topic: `의미상의 주어`
-
-1. inspect textbook p.46 author rule (`for + 목적격` / `of + 목적격` conditions)
-2. define UNIT-specific contract
-3. create derived practice only
-4. implement runtime lesson 21
-5. register common Shell/index
-6. pass syntax + semantic + integration CI
+## Next milestone
+1. PR review/sanity check of `phase92-full-content-integration`.
+2. Merge to `main`.
+3. GitHub Actions semantic CI + Pages deployment.
+4. Production smoke check at the Pages URL.
+5. Keep Phase 13B/14B open until physical/live evidence is obtained.
