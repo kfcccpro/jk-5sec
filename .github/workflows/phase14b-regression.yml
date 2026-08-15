@@ -1,0 +1,58 @@
+name: Phase 14B Live Regression
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: JavaScript syntax check
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find js data scripts -type f -name '*.js' -o -name '*.cjs' -print0)
+
+      - name: Start local app server
+        run: |
+          python3 -m http.server 4173 > /tmp/jk5-http.log 2>&1 &
+          echo $! > /tmp/jk5-http.pid
+          for i in {1..30}; do
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/jk5-http.log
+          exit 1
+
+      - name: Run Phase 14B interaction regression
+        env:
+          JK_BASE_URL: http://127.0.0.1:4173
+        run: node scripts/phase14b-live-regression.cjs
+
+      - name: Upload Phase 14B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase14b-regression-evidence
+          path: artifacts/phase14b/
+          if-no-files-found: warn
