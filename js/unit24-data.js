@@ -1,0 +1,7 @@
+window.JK_UNIT24_ITEMS=[
+{id:'u24-q1-remember-to-lock',prompt:'Remember ___ the door before you leave.',choices:['to lock','locking'],answer:'to lock',targetVerb:'remember',meaningAnswer:'앞으로 할 일',formAnswer:'to-V',rule:'remember가 앞으로 해야 할 일을 기억하라는 뜻이면 remember + to-V를 쓴다.',errorCode:'U24_CONFUSED_FUTURE_ACTION_WITH_MEMORY'},
+{id:'u24-q2-remember-locking',prompt:'I remember ___ the door before I left.',choices:['locking','to lock'],answer:'locking',targetVerb:'remember',meaningAnswer:'과거의 경험',formAnswer:'~ing',rule:'이미 한 일을 기억한다는 뜻이면 remember + ~ing를 쓴다.',errorCode:'U24_CONFUSED_MEMORY_WITH_FUTURE_ACTION'},
+{id:'u24-q3-stop-to-rest',prompt:'We stopped ___ for a few minutes during the hike.',choices:['to rest','resting'],answer:'to rest',targetVerb:'stop',meaningAnswer:'다른 행동의 목적',formAnswer:'to-V',rule:'하던 일을 멈추고 다른 행동을 하기 위한 목적이면 stop + to-V다.',errorCode:'U24_CONFUSED_PURPOSE_WITH_STOPPING_ACTIVITY'},
+{id:'u24-q4-stop-talking',prompt:'The teacher asked the students to stop ___ during the test.',choices:['talking','to talk'],answer:'talking',targetVerb:'stop',meaningAnswer:'하던 행동 중단',formAnswer:'~ing',rule:'그 행동 자체를 그만두라는 뜻이면 stop + ~ing를 쓴다.',errorCode:'U24_CONFUSED_STOPPING_ACTIVITY_WITH_PURPOSE'},
+{id:'u24-q5-try-opening',prompt:'If the key does not work, try ___ the window instead.',choices:['opening','to open'],answer:'opening',targetVerb:'try',meaningAnswer:'시험 삼아 해보기',formAnswer:'~ing',rule:'해결책으로 시험 삼아 해보는 뜻이면 try + ~ing를 쓴다. 단순히 애써 시도한다는 뜻의 try + to-V와 구별한다.',errorCode:'U24_CONFUSED_EXPERIMENT_WITH_EFFORT'}
+];
