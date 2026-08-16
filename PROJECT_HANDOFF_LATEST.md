@@ -1,7 +1,7 @@
 # JK 5SEC Grammar — PROJECT HANDOFF LATEST
 
 > 새 채팅 복구용 최우선 문서
-> 시작 문구: `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, 또는 `진행`
+> 시작 문구: `JK 5초 다음 작업 진행`, `다음 작업 진행`, `다음 단계 진행`, `진행`, 또는 `전진`
 
 ## 0. 복구 순서
 1. GitHub `kfcccpro/jk-5sec` 최신 `main` 확인
@@ -10,49 +10,38 @@
 4. 첫 미완료 단계부터 진행
 
 ## 1. Current baseline
-- Version: `0.32.0`
-- Runtime lessons: 20
-- Derived items: 100
-- Content contract: `2.7.0`
+- Version: `0.33.0`
+- Runtime lessons: 21
+- Derived items: 105
+- Content contract: `2.8.0`
 - HTML/CSS/Vanilla JS + localStorage + GitHub Pages
 - 학생 PIN 8081 / 관리자 PIN 2007
 
-## 2. Newly completed continuous block
+## 2. Latest completed phase
+### Phase 33 — P2 / CH1 / U5
+`의미상의 주어`
 
-### Phase 30 — P2 / CH1 / U2
-`목적으로 to부정사만을 취하는 타동사`
+Source: textbook p.46.
+Author rule:
+- 사람의 성질·태도를 평가하는 형용사 → `of + 목적격`
+- 그 외 일반 조건·상황·난이도 등 → `for + 목적격`
 
-Source: textbook p.44.
-Author list: decide, ask, agree, attempt, expect, fail, want, wish, hope, promise, refuse, allow.
 Decision loop:
-`본동사 → 목록 확인 → 목적어 역할 → to-V`
+`형용사 확인 → 사람의 성질 평가? → YES: of / NO: for → 5초 Rule → 재도전`
 
-Files: `js/unit18-data.js`, `js/unit18-engine.js`, `docs/PHASE30_P2_CH1_UNIT2_ANALYSIS.md`
+Files:
+- `js/unit21-data.js`
+- `js/unit21-engine.js`
+- `js/phase14-common-shell.js`
+- `data/content-contract.js`
+- `index.html`
 
-### Phase 31 — P2 / CH1 / U3
-`to부정사의 숙어 표현`
-
-Source: textbook p.45.
-Core expressions: manage / choose / come / happen(chance) / intend / seek / pretend / fail + to-V.
-Decision loop:
-`표현 → 숙어 의미 → 동사 + to-V 패턴 → to-V`
-
-Files: `js/unit19-data.js`, `js/unit19-engine.js`, `docs/PHASE31_P2_CH1_UNIT3_ANALYSIS.md`
-
-### Phase 32 — P2 / CH1 / U4
-`목적격 보어로 to부정사만을 취하는 동사`
-
-Source: textbook p.45.
-Author list: advise, allow, ask, cause, enable, expect, force, intend, invite, order, persuade, warn, permit, teach, tell, want, recommend, encourage, beg, urge.
-Decision loop:
-`본동사 → 목적어 O → 목적격 보어 역할 → to-V`
-
-Files: `js/unit20-data.js`, `js/unit20-engine.js`, `docs/PHASE32_P2_CH1_UNIT4_ANALYSIS.md`
+Runtime mapping: runtime 21 = P2 / CH1 / U5.
 
 ## 3. Architecture rules
 - Public GitHub에는 교재 원문 예문을 저장하지 않고 파생문항만 저장한다.
 - runtime lesson ID는 전역 순번, part/chapter/unit은 실제 교재 metadata다.
-- UNIT 2의 `V + to-V`와 UNIT 4의 `V + O + to-V`를 별도 판단 엔진으로 유지한다.
+- 각 UNIT은 교재 저자의 실제 판단 순서를 짧은 클릭 행동으로 변환한다.
 - Shell/index/contract integration은 semantic CI가 검증한다.
 
 ## 4. Still pending, non-blocking
@@ -60,9 +49,9 @@ Files: `js/unit20-data.js`, `js/unit20-engine.js`, `docs/PHASE32_P2_CH1_UNIT4_AN
 - Phase 14B live interaction regression confirmation
 
 ## 5. Next phase
-### Phase 33 — P2 / CH1 / U5
-`의미상의 주어`
+### Phase 34 — P2 / CH1 / U6
+`to부정사의 부정`
 
-Textbook p.46의 `for + 목적격` / `of + 목적격` 구분 조건을 먼저 확인한 뒤 runtime 21로 구현한다.
+다음 교재 UNIT의 저자식 판단 규칙을 확인한 뒤 runtime 22로 구현한다.
 
-사용자가 `진행`, `다음 작업 진행`, 또는 여러 단계를 한꺼번에 진행하라고 하면 Phase 33부터 최신 main 기준으로 이어간다.
+사용자가 `진행`, `전진`, `다음 작업 진행`, 또는 여러 단계를 한꺼번에 진행하라고 하면 Phase 34부터 최신 main 기준으로 이어간다.
