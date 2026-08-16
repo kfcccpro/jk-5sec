@@ -1,0 +1,1 @@
+(()=>{const cfg={unitNo:23,items:window.JK_UNIT23_ITEMS,badge:'PART 2 · CH 1 · UNIT 7',labels:{cold:'5초 판단',repair:'판단 교정',retry:'원문 재도전'},focus:'way 뒤 구조를 먼저 본다 → 직접 동작이면 to-V / of 뒤면 ~ing',runKey:'unit23Runs'};window.JKGenericDecisionEngine.attach(cfg);})();
