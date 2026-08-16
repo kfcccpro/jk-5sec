@@ -1,0 +1,5 @@
+JK_createDecisionUnit({runtimeId:21,itemsGlobal:'JK_UNIT21_ITEMS',badge:'PART 2 · CH 1 · UNIT 5',shortLabel:'PART 2 · CH 1 · UNIT 5',answerTitle:'형용사의 의미를 보고 의미상 주어의 전치사를 고르세요.',ruleHeadline:'형용사 → 사람의 성질 평가? → of / 아니면 for',stableText:'사람의 성질 평가 여부를 기준으로 of/for를 안정적으로 판정했습니다.',repairText:'전치사를 바로 외우기보다, 형용사가 그 사람의 성질·태도를 평가하는지 먼저 확인합니다.',steps:[
+{key:'adjective',label:'형용사 확인',title:'판단의 기준이 되는 형용사는 무엇입니까?',targetField:'targetAdjective',options:i=>i.adjectiveOptions},
+{key:'personQuality',label:'사람 성질 판단',title:'이 형용사는 행동한 사람의 성질·태도를 평가합니까?',targetField:'personQualityAnswer',options:[{value:'yes',label:'그렇다'},{value:'no',label:'아니다'}]},
+{key:'preposition',label:'의미상 주어',title:'교재의 판단 기준에 따라 의미상 주어의 전치사를 고르세요.',targetField:'prepositionAnswer',last:true,options:[{value:'of',label:'of + 목적격'},{value:'for',label:'for + 목적격'}]}
+]});
