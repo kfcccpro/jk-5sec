@@ -1,0 +1,7 @@
+window.JK_UNIT25_ITEMS=[
+{id:'u25-q1-takes-time',prompt:'It ___ about twenty minutes to walk to the station.',choices:['takes','spends'],answer:'takes',resourceAnswer:'시간',patternAnswer:'It takes + 시간 + to-V',rule:'어떤 일을 하는 데 시간이 걸린다는 표현은 It takes + 시간 + to-V로 잡는다.',errorCode:'U25_CONFUSED_TAKE_PATTERN'},
+{id:'u25-q2-took-hours',prompt:'It ___ us two hours to finish the report.',choices:['took','spent'],answer:'took',resourceAnswer:'시간',patternAnswer:'It takes + 사람 + 시간 + to-V',rule:'사람을 함께 밝힐 때도 It takes + 사람 + 시간 + to-V의 틀을 유지한다.',errorCode:'U25_CONFUSED_TAKE_WITH_SPEND'},
+{id:'u25-q3-takes-effort',prompt:'It takes a lot of effort ___ a new habit.',choices:['to build','building'],answer:'to build',resourceAnswer:'노력',patternAnswer:'It takes + 노력 + to-V',rule:'시간뿐 아니라 effort 같은 노력도 It takes + 명사 + to-V 구조로 나타낼 수 있다.',errorCode:'U25_DROPPED_TO_IN_TAKE_PATTERN'},
+{id:'u25-q4-takes-money',prompt:'It takes a great deal of money ___ a small business.',choices:['to start','starting'],answer:'to start',resourceAnswer:'돈',patternAnswer:'It takes + 돈 + to-V',rule:'비용·돈이 든다는 의미에서도 It takes + 비용 + to-V 구조를 확인한다.',errorCode:'U25_DROPPED_TO_IN_TAKE_PATTERN'},
+{id:'u25-q5-how-long',prompt:'How long does it take ___ this task?',choices:['to complete','completing'],answer:'to complete',resourceAnswer:'시간',patternAnswer:'How long does it take + to-V',rule:'소요 시간을 묻는 How long does it take ...? 뒤에서도 행동은 to-V로 연결한다.',errorCode:'U25_USED_GERUND_AFTER_TAKE'}
+];
