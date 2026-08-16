@@ -1,0 +1,7 @@
+window.JK_UNIT23_ITEMS=[
+{id:'u23-q1-best-way-to-learn',prompt:'What is the best way ___ new vocabulary efficiently?',choices:['to learn','learning'],answer:'to learn',targetNoun:'way',structureAnswer:'way + to-V',meaningAnswer:'방법/수단',rule:'way 뒤에서 무엇을 하는 방법을 바로 설명할 때는 way + to-V를 쓴다.',errorCode:'U23_USED_ING_DIRECTLY_AFTER_WAY'},
+{id:'u23-q2-safe-way-to-cross',prompt:'This is the safest way ___ the busy road.',choices:['to cross','crossing'],answer:'to cross',targetNoun:'way',structureAnswer:'way + to-V',meaningAnswer:'방법/수단',rule:'way를 뒤에서 동작으로 직접 수식하면 to부정사가 온다.',errorCode:'U23_USED_ING_DIRECTLY_AFTER_WAY'},
+{id:'u23-q3-easy-way-to-remember',prompt:'She showed me an easy way ___ the formula.',choices:['to remember','remembering'],answer:'to remember',targetNoun:'way',structureAnswer:'way + to-V',meaningAnswer:'방법/수단',rule:'an easy way처럼 way가 방법을 뜻하고 뒤에 동작이 직접 이어지면 to-V를 선택한다.',errorCode:'U23_USED_ING_DIRECTLY_AFTER_WAY'},
+{id:'u23-q4-good-way-to-save',prompt:'Using a timer is a good way ___ time while studying.',choices:['to save','saving'],answer:'to save',targetNoun:'way',structureAnswer:'way + to-V',meaningAnswer:'방법/수단',rule:'good way 뒤에서 목적이 되는 행동을 직접 설명할 때 way + to-V를 쓴다.',errorCode:'U23_USED_ING_DIRECTLY_AFTER_WAY'},
+{id:'u23-q5-way-of-solving',prompt:'They discussed a new way ___ the problem.',choices:['of solving','solving'],answer:'of solving',targetNoun:'way',structureAnswer:'way + of + ~ing',meaningAnswer:'방법/수단',rule:'동명사를 쓰려면 way 뒤에 바로 ~ing를 두지 않고 way of + ~ing 구조를 쓴다.',errorCode:'U23_DROPPED_OF_BEFORE_GERUND'}
+];
