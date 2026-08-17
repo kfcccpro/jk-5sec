@@ -5,43 +5,23 @@ const PORT=9223;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function chromePath(){for(const p of [process.env.CHROME_PATH,'/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].filter(Boolean))if(fs.existsSync(p))return p;throw new Error('Chrome not found');}
 async function waitJson(url){for(let i=0;i<100;i++){try{const r=await fetch(url);if(r.ok)return r.json();}catch{}await sleep(150);}throw new Error('CDP timeout');}
-class CDP{
-  constructor(url){this.url=url;this.id=0;this.pending=new Map();this.events=[];}
-  async open(){this.ws=new WebSocket(this.url);await new Promise((res,rej)=>{this.ws.onopen=res;this.ws.onerror=rej;});this.ws.onmessage=e=>{const m=JSON.parse(e.data);if(!m.id){if(m.method)this.events.push(m);return;}const p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);m.error?p.reject(new Error(JSON.stringify(m.error))):p.resolve(m.result);};}
-  send(method,params={}){const id=++this.id;return new Promise((resolve,reject)=>{this.pending.set(id,{resolve,reject});this.ws.send(JSON.stringify({id,method,params}));});}
-  close(){try{this.ws.close();}catch{}}
-}
+class CDP{constructor(url){this.url=url;this.id=0;this.pending=new Map();this.events=[];}async open(){this.ws=new WebSocket(this.url);await new Promise((res,rej)=>{this.ws.onopen=res;this.ws.onerror=rej;});this.ws.onmessage=e=>{const m=JSON.parse(e.data);if(!m.id){if(m.method)this.events.push(m);return;}const p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);m.error?p.reject(new Error(JSON.stringify(m.error))):p.resolve(m.result);};}send(method,params={}){const id=++this.id;return new Promise((resolve,reject)=>{this.pending.set(id,{resolve,reject});this.ws.send(JSON.stringify({id,method,params}));});}close(){try{this.ws.close();}catch{}}}
 async function ev(c,e){const r=await c.send('Runtime.evaluate',{expression:e,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw new Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text||'eval');return r.result?.value;}
 async function wait(c,e,label=e){for(let i=0;i<160;i++){try{if(await ev(c,`Boolean(${e})`))return;}catch{}await sleep(100);}const d=await ev(c,`(()=>({href:location.href,ready:document.readyState,body:(document.body?.innerText||'').slice(0,400),pin:Boolean(document.querySelector('#pinInput')),shell:typeof window.JKCommonShell,shellCount:window.JKCommonShell?.units?.length??null,wrongbook:typeof window.JK_WRONGBOOK,wrongbookReady:window.JK_WRONGBOOK_READY??null}))()`);throw new Error(`wait ${label} ${JSON.stringify(d)}`);}
-const chrome=spawn(chromePath(),['--headless=new','--no-sandbox','--disable-dev-shm-usage',`--remote-debugging-port=${PORT}`,'--user-data-dir=/tmp/jk-wrongbook-audit-final','about:blank'],{stdio:'ignore'});
-let c;
+const chrome=spawn(chromePath(),['--headless=new','--no-sandbox','--disable-dev-shm-usage',`--remote-debugging-port=${PORT}`,'--user-data-dir=/tmp/jk-wrongbook-audit-final','about:blank'],{stdio:'ignore'});let c;
 try{
-  await waitJson(`http://127.0.0.1:${PORT}/json/version`);
-  const target=await (await fetch(`http://127.0.0.1:${PORT}/json/new?about:blank`,{method:'PUT'})).json();
-  c=new CDP(target.webSocketDebuggerUrl);await c.open();await c.send('Page.enable');await c.send('Runtime.enable');await c.send('Log.enable');
-  await c.send('Page.navigate',{url:`${BASE}/?wrongbook=${Date.now()}`});
-  await wait(c,"document.readyState==='complete'",'document');
-  await wait(c,"document.querySelector('#pinInput') && window.JK_WRONGBOOK_READY===true && window.JKCommonShell?.units?.length===26",'JK ready');
-  const baseline=await ev(c,`(()=>({title:JK_COURSE_MAP.title,sources:Object.keys(JK_SOURCE_MAP).length,foreign:/3800|PSS|PRACTICE/i.test(JSON.stringify(JK_SOURCE_MAP))}))()`);
-  if(baseline.title!=='답이 보이는 5초 영어어법'||baseline.sources!==26||baseline.foreign)throw new Error('JK source identity failed '+JSON.stringify(baseline));
-  await ev(c,`localStorage.removeItem('jk5sec_wrongbook_v1');document.querySelector('#pinInput').value='8081';document.querySelector('#studentLogin').click();true`);
-  await wait(c,"document.querySelector('#unit1Btn')",'student home');
-  const captured=await ev(c,`(()=>{session=freshSession();session.firstAnswerCorrect=false;session.itemResults=[{id:JK_UNIT1_ITEMS[0].id,status:'REPAIRED'}];saveStore();return Object.values(JK_WRONGBOOK.read().items)[0]||null})()`);
-  if(!captured||captured.runtimeId!==1||captured.page!=='18'||captured.status!=='review_due')throw new Error('automatic wrong capture failed '+JSON.stringify(captured));
-  await ev(c,"JKCommonShell.units.find(x=>x.id===2).start();true");
-  await wait(c,"document.body.innerText.includes('PART 1 · CH 1 · UNIT 2') && !document.body.innerText.includes('이전 오답 복구')",'same chapter bypass');
-  await ev(c,"JKCommonShell.units.find(x=>x.id===8).start();true");
-  await wait(c,"document.body.innerText.includes('이전 오답 복구') && document.querySelector('#jkWrongSubmit')",'later chapter gate');
-  const gate=await ev(c,`(()=>({text:document.body.innerText,choices:[...document.querySelectorAll('#jkWrongChoices .choice')].map(x=>x.innerText)}))()`);
-  await ev(c,`(()=>{const a=JK_UNIT1_ITEMS[0].answer;const b=[...document.querySelectorAll('#jkWrongChoices .choice')].find(x=>x.innerText!==a);b.click();document.querySelector('#jkWrongSubmit').click();return true})()`);
-  await wait(c,"document.querySelector('#jkBookRetry')",'book required');
-  const book=await ev(c,`(()=>({text:document.body.innerText,hasRule:document.body.innerText.includes(JK_UNIT1_ITEMS[0].rule),has3800:/3800|PSS|PRACTICE/.test(document.body.innerText)}))()`);
-  if(!book.text.includes('JK 교재 p.18')||!book.text.includes('PART 1 · CH 1 · UNIT 1')||book.hasRule||book.has3800)throw new Error('book-return policy failed '+JSON.stringify(book));
-  await ev(c,"document.querySelector('#jkBookRetry').click();true");await wait(c,"document.querySelector('#jkWrongSubmit')",'retry question');
-  await ev(c,`(()=>{const a=JK_UNIT1_ITEMS[0].answer;const b=[...document.querySelectorAll('#jkWrongChoices .choice')].find(x=>x.innerText===a);b.click();document.querySelector('#jkWrongSubmit').click();return true})()`);
-  await wait(c,"document.querySelector('#jkWrongNext')",'recovered');
-  await ev(c,"document.querySelector('#jkWrongNext').click();true");await wait(c,"document.body.innerText.includes('PART 1 · CH 2 · UNIT 1') && !document.body.innerText.includes('이전 오답 복구')",'target starts');
-  const recovered=await ev(c,`Object.values(JK_WRONGBOOK.read().items)[0]`);
-  if(recovered.status!=='recovered'||recovered.reviewWrongCount<1||recovered.reviewCorrectCount<1)throw new Error('recovery state failed '+JSON.stringify(recovered));
-  console.log(JSON.stringify({pass:true,baseline,captured:{runtimeId:captured.runtimeId,page:captured.page,status:captured.status},gate:{choiceCount:gate.choices.length},book:{hasRule:book.hasRule,has3800:book.has3800,ref:book.text.match(/JK 교재[^\n]*/)?.[0]||''},recovered:{runtimeId:recovered.runtimeId,page:recovered.page,status:recovered.status,reviewWrongCount:recovered.reviewWrongCount,reviewCorrectCount:recovered.reviewCorrectCount}},null,2));
+ await waitJson(`http://127.0.0.1:${PORT}/json/version`);const target=await (await fetch(`http://127.0.0.1:${PORT}/json/new?about:blank`,{method:'PUT'})).json();c=new CDP(target.webSocketDebuggerUrl);await c.open();await c.send('Page.enable');await c.send('Runtime.enable');await c.send('Log.enable');await c.send('Page.navigate',{url:`${BASE}/?wrongbook=${Date.now()}`});
+ await wait(c,"document.readyState==='complete'",'document');await wait(c,"document.querySelector('#pinInput') && window.JK_WRONGBOOK_READY===true && window.JKCommonShell?.units?.length===29",'JK ready');
+ const baseline=await ev(c,`(()=>({title:JK_COURSE_MAP.title,sources:Object.keys(JK_SOURCE_MAP).length,foreign:/3800|PSS|PRACTICE/i.test(JSON.stringify(JK_SOURCE_MAP)),p39:JK_SOURCE_MAP[27],p40:JK_SOURCE_MAP[28],p41:JK_SOURCE_MAP[29]}))()`);
+ if(baseline.title!=='답이 보이는 5초 영어어법'||baseline.sources!==29||baseline.foreign||baseline.p39?.page!=='50'||baseline.p40?.page!=='50'||baseline.p41?.page!=='51')throw new Error('JK source identity failed '+JSON.stringify(baseline));
+ await ev(c,`localStorage.removeItem('jk5sec_wrongbook_v1');document.querySelector('#pinInput').value='8081';document.querySelector('#studentLogin').click();true`);await wait(c,"document.querySelector('#unit1Btn') && document.querySelector('#unit29Btn')",'student home');
+ const captured=await ev(c,`(()=>{session=freshSession();session.firstAnswerCorrect=false;session.itemResults=[{id:JK_UNIT1_ITEMS[0].id,status:'REPAIRED'}];saveStore();return Object.values(JK_WRONGBOOK.read().items)[0]||null})()`);if(!captured||captured.runtimeId!==1||captured.page!=='18'||captured.status!=='review_due')throw new Error('automatic wrong capture failed '+JSON.stringify(captured));
+ await ev(c,"JKCommonShell.units.find(x=>x.id===2).start();true");await wait(c,"document.body.innerText.includes('PART 1 · CH 1 · UNIT 2') && !document.body.innerText.includes('이전 오답 복구')",'same chapter bypass');
+ await ev(c,"JKCommonShell.units.find(x=>x.id===8).start();true");await wait(c,"document.body.innerText.includes('이전 오답 복구') && document.querySelector('#jkWrongSubmit')",'later chapter gate');
+ await ev(c,`(()=>{const a=JK_UNIT1_ITEMS[0].answer;const b=[...document.querySelectorAll('#jkWrongChoices .choice')].find(x=>x.innerText!==a);b.click();document.querySelector('#jkWrongSubmit').click();return true})()`);await wait(c,"document.querySelector('#jkBookRetry')",'book required');
+ const book=await ev(c,`(()=>({text:document.body.innerText,hasRule:document.body.innerText.includes(JK_UNIT1_ITEMS[0].rule),has3800:/3800|PSS|PRACTICE/.test(document.body.innerText)}))()`);if(!book.text.includes('JK 교재 p.18')||!book.text.includes('PART 1 · CH 1 · UNIT 1')||book.hasRule||book.has3800)throw new Error('book-return policy failed '+JSON.stringify(book));
+ await ev(c,"document.querySelector('#jkBookRetry').click();true");await wait(c,"document.querySelector('#jkWrongSubmit')",'retry question');await ev(c,`(()=>{const a=JK_UNIT1_ITEMS[0].answer;const b=[...document.querySelectorAll('#jkWrongChoices .choice')].find(x=>x.innerText===a);b.click();document.querySelector('#jkWrongSubmit').click();return true})()`);await wait(c,"document.querySelector('#jkWrongNext')",'recovered');await ev(c,"document.querySelector('#jkWrongNext').click();true");await wait(c,"document.body.innerText.includes('PART 1 · CH 2 · UNIT 1') && !document.body.innerText.includes('이전 오답 복구')",'target starts');
+ const recovered=await ev(c,`Object.values(JK_WRONGBOOK.read().items)[0]`);if(recovered.status!=='recovered'||recovered.reviewWrongCount<1||recovered.reviewCorrectCount<1)throw new Error('recovery state failed '+JSON.stringify(recovered));
+ await ev(c,"JKCommonShell.units.find(x=>x.id===27).start();true");await wait(c,"document.body.innerText.includes('PART 2 · CH 2 · UNIT 1') && document.body.innerText.includes('동사 뒤 목적어 형태를 고르세요.')",'runtime 27');await ev(c,"JKCommonShell.units.find(x=>x.id===29).start();true");await wait(c,"document.body.innerText.includes('PART 2 · CH 2 · UNIT 3') && document.body.innerText.includes('to 뒤에 올 형태를 고르세요.')",'runtime 29');
+ console.log(JSON.stringify({pass:true,baseline:{sources:baseline.sources,foreign:baseline.foreign,pages:[baseline.p39.page,baseline.p40.page,baseline.p41.page]},wrongbook:{status:recovered.status,reviewWrongCount:recovered.reviewWrongCount,reviewCorrectCount:recovered.reviewCorrectCount},runtime29:true},null,2));
 }catch(e){console.error(e.stack||e);if(c){const relevant=c.events.filter(x=>['Runtime.exceptionThrown','Log.entryAdded'].includes(x.method));if(relevant.length)console.error('CDP_EVENTS '+JSON.stringify(relevant.slice(-8)));}process.exitCode=1;}finally{c?.close();chrome.kill('SIGTERM');}
