@@ -1,0 +1,7 @@
+window.JK_UNIT26_ITEMS=[
+{id:'u26-q1-seems-have-lost',prompt:'She seems ___ her key before arriving here.',choices:['to have lost','to lose'],answer:'to have lost',timeRelationAnswer:'earlier',formAnswer:'to have p.p.',rule:'to부정사의 일이 본동사보다 먼저 일어났으면 완료부정사 to have p.p.를 쓴다.',errorCode:'U26_USED_SIMPLE_INFINITIVE_FOR_EARLIER_EVENT'},
+{id:'u26-q2-appears-know',prompt:'He appears ___ the answer now.',choices:['to know','to have known'],answer:'to know',timeRelationAnswer:'same',formAnswer:'to-V',rule:'to부정사의 일이 본동사와 같은 시점이면 단순부정사 to-V를 쓴다.',errorCode:'U26_USED_PERFECT_INFINITIVE_FOR_SAME_TIME'},
+{id:'u26-q3-is-said-have-left',prompt:'The scientist is said ___ the country last year.',choices:['to have left','to leave'],answer:'to have left',timeRelationAnswer:'earlier',formAnswer:'to have p.p.',rule:'현재의 전달 시점보다 떠난 일이 먼저 일어났으므로 to have p.p.가 필요하다.',errorCode:'U26_USED_SIMPLE_INFINITIVE_FOR_EARLIER_EVENT'},
+{id:'u26-q4-seemed-be-tired',prompt:'He seemed ___ tired during the meeting.',choices:['to be','to have been'],answer:'to be',timeRelationAnswer:'same',formAnswer:'to-V',rule:'seemed의 과거 시점과 피곤한 상태가 같은 시점이면 to-V를 쓴다.',errorCode:'U26_USED_PERFECT_INFINITIVE_FOR_SAME_TIME'},
+{id:'u26-q5-is-known-have-earned',prompt:'The company is known ___ a large profit so far.',choices:['to have earned','to earn'],answer:'to have earned',timeRelationAnswer:'earlier',formAnswer:'to have p.p.',rule:'알려진 현재 시점보다 수익을 얻은 일이 앞선 완료 의미이므로 to have p.p.를 쓴다.',errorCode:'U26_USED_SIMPLE_INFINITIVE_FOR_EARLIER_EVENT'}
+];
