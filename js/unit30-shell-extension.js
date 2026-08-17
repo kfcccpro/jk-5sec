@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===30))return;u.push({id:30,part:3,chapter:0,unit:1,chapterLabel:'UNIT 1',focus:'현재 시제 / 과거 시제 · 일반·습관·역사 사실 판정',itemCount:window.unit30Items.length||5,start:startUnit30,runKey:'unit30Runs'});})();

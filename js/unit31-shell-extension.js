@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===31))return;u.push({id:31,part:3,chapter:0,unit:2,chapterLabel:'UNIT 2',focus:'과거 동사 / have p.p. / had p.p. · 시간표현과 사건순서',itemCount:window.unit31Items.length||5,start:startUnit31,runKey:'unit31Runs'});})();
