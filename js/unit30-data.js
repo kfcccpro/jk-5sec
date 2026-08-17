@@ -1,0 +1,7 @@
+window.JK_UNIT30_ITEMS=[
+{id:'u30-q1-water-boils',prompt:'Water ___ at 100°C under normal conditions.',choices:['boils','boiled'],answer:'boils',usageAnswer:'universal-truth',tenseAnswer:'present',rule:'불변의 진리는 현재 시제로 나타낸다.',errorCode:'U30_USED_PAST_FOR_PRESENT_RULE'},
+{id:'u30-q2-walks-school',prompt:'Minho usually ___ to school in the morning.',choices:['walks','walked'],answer:'walks',usageAnswer:'habit',tenseAnswer:'present',rule:'현재의 반복 습관은 현재 시제로 나타낸다.',errorCode:'U30_USED_PAST_FOR_PRESENT_RULE'},
+{id:'u30-q3-honesty-matters',prompt:'Honesty ___ in every relationship.',choices:['matters','mattered'],answer:'matters',usageAnswer:'general-fact',tenseAnswer:'present',rule:'현재에도 성립하는 일반적 사실은 현재 시제를 쓴다.',errorCode:'U30_USED_PAST_FOR_PRESENT_RULE'},
+{id:'u30-q4-war-ended',prompt:'The Korean War ___ in an armistice in 1953.',choices:['ended','ends'],answer:'ended',usageAnswer:'historical-fact',tenseAnswer:'past',rule:'역사적으로 끝난 사실은 과거 시제로 나타낸다.',errorCode:'U30_USED_PRESENT_FOR_HISTORICAL_FACT'},
+{id:'u30-q5-invented-telephone',prompt:'Alexander Graham Bell ___ the telephone in the nineteenth century.',choices:['invented','invents'],answer:'invented',usageAnswer:'historical-fact',tenseAnswer:'past',rule:'특정 과거 시점의 역사적 사실은 과거 시제로 판정한다.',errorCode:'U30_USED_PRESENT_FOR_HISTORICAL_FACT'}
+];
