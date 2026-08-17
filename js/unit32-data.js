@@ -1,0 +1,7 @@
+window.JK_UNIT32_ITEMS=[
+{id:'u32-q1-when-arrives',prompt:'I will call you when he ___.',choices:['arrives','will arrive'],answer:'arrives',clauseTypeAnswer:'time-clause',tenseAnswer:'present-for-future',rule:'미래를 뜻해도 when이 이끄는 시간 부사절 안에서는 현재 시제를 쓴다.',errorCode:'U32_USED_WILL_IN_FUTURE_TIME_CLAUSE'},
+{id:'u32-q2-if-rains',prompt:'If it ___ tomorrow, we will stay home.',choices:['rains','will rain'],answer:'rains',clauseTypeAnswer:'condition-clause',tenseAnswer:'present-for-future',rule:'미래 조건을 나타내는 if절 안에서는 will 대신 현재 시제를 쓴다.',errorCode:'U32_USED_WILL_IN_FUTURE_CONDITION_CLAUSE'},
+{id:'u32-q3-before-leaves',prompt:'Finish the work before she ___.',choices:['leaves','will leave'],answer:'leaves',clauseTypeAnswer:'time-clause',tenseAnswer:'present-for-future',rule:'before가 이끄는 시간 부사절은 미래 의미라도 현재 시제를 사용한다.',errorCode:'U32_USED_WILL_IN_FUTURE_TIME_CLAUSE'},
+{id:'u32-q4-until-comes',prompt:'We will wait here until the bus ___.',choices:['comes','will come'],answer:'comes',clauseTypeAnswer:'time-clause',tenseAnswer:'present-for-future',rule:'until 시간 부사절에서는 미래 사건도 현재 시제로 표현한다.',errorCode:'U32_USED_WILL_IN_FUTURE_TIME_CLAUSE'},
+{id:'u32-q5-unless-changes',prompt:'Unless the weather ___, the game will continue.',choices:['changes','will change'],answer:'changes',clauseTypeAnswer:'condition-clause',tenseAnswer:'present-for-future',rule:'unless가 이끄는 조건 부사절은 미래 의미라도 현재 시제를 쓴다.',errorCode:'U32_USED_WILL_IN_FUTURE_CONDITION_CLAUSE'}
+];
