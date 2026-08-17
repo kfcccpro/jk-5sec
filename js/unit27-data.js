@@ -1,0 +1,7 @@
+window.JK_UNIT27_ITEMS=[
+{id:'u27-q1-avoid-making',prompt:'You should avoid ___ the same mistake again.',choices:['making','to make'],answer:'making',verbClassAnswer:'gerund-object',formAnswer:'~ing',rule:'avoid는 동명사를 목적어로 취하므로 뒤에는 ~ing 형태가 온다.',errorCode:'U27_USED_TO_V_AFTER_GERUND_OBJECT_VERB'},
+{id:'u27-q2-consider-changing',prompt:'She is considering ___ her study plan.',choices:['changing','to change'],answer:'changing',verbClassAnswer:'gerund-object',formAnswer:'~ing',rule:'consider는 동명사를 목적어로 취하는 타동사이므로 consider + ~ing로 연결한다.',errorCode:'U27_USED_TO_V_AFTER_GERUND_OBJECT_VERB'},
+{id:'u27-q3-postpone-meeting',prompt:'They postponed ___ the client until Friday.',choices:['meeting','to meet'],answer:'meeting',verbClassAnswer:'gerund-object',formAnswer:'~ing',rule:'postpone 뒤의 목적어 역할은 동명사가 맡으므로 postpone + ~ing를 쓴다.',errorCode:'U27_USED_TO_V_AFTER_GERUND_OBJECT_VERB'},
+{id:'u27-q4-recommend-taking',prompt:'I recommend ___ notes during the lecture.',choices:['taking','to take'],answer:'taking',verbClassAnswer:'gerund-object',formAnswer:'~ing',rule:'recommend가 목적어를 직접 취할 때 동명사 형태를 사용한다.',errorCode:'U27_USED_TO_V_AFTER_GERUND_OBJECT_VERB'},
+{id:'u27-q5-resist-eating',prompt:'He could not resist ___ another piece of cake.',choices:['eating','to eat'],answer:'eating',verbClassAnswer:'gerund-object',formAnswer:'~ing',rule:'resist는 동명사를 목적어로 취하므로 resist + ~ing가 맞다.',errorCode:'U27_USED_TO_V_AFTER_GERUND_OBJECT_VERB'}
+];

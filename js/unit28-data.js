@@ -1,0 +1,7 @@
+window.JK_UNIT28_ITEMS=[
+{id:'u28-q1-have-difficulty-solving',prompt:'We had difficulty ___ the problem.',choices:['solving','to solve'],answer:'solving',patternAnswer:'have difficulty ~ing',formAnswer:'~ing',rule:'have difficulty 뒤에는 동명사 형태가 온다.',errorCode:'U28_BROKE_GERUND_EXPRESSION'},
+{id:'u28-q2-spend-time-reading',prompt:'She spends a lot of time ___ English books.',choices:['reading','to read'],answer:'reading',patternAnswer:'spend time ~ing',formAnswer:'~ing',rule:'spend time 뒤에는 ~ing를 써서 무엇을 하며 시간을 보내는지 나타낸다.',errorCode:'U28_BROKE_GERUND_EXPRESSION'},
+{id:'u28-q3-it-is-no-use-arguing',prompt:'It is no use ___ with him.',choices:['arguing','to argue'],answer:'arguing',patternAnswer:'It is no use ~ing',formAnswer:'~ing',rule:'It is no use 뒤에는 동명사를 써서 ~해도 소용없다는 뜻을 만든다.',errorCode:'U28_BROKE_GERUND_EXPRESSION'},
+{id:'u28-q4-feel-like-walking',prompt:'I feel like ___ after dinner.',choices:['walking','to walk'],answer:'walking',patternAnswer:'feel like ~ing',formAnswer:'~ing',rule:'feel like 뒤에는 ~ing를 써서 ~하고 싶다는 뜻을 만든다.',errorCode:'U28_BROKE_GERUND_EXPRESSION'},
+{id:'u28-q5-cannot-help-laughing',prompt:'I could not help ___ at the joke.',choices:['laughing','to laugh'],answer:'laughing',patternAnswer:'cannot help ~ing',formAnswer:'~ing',rule:'cannot help 뒤에는 ~ing를 써서 ~하지 않을 수 없다는 뜻을 만든다.',errorCode:'U28_BROKE_GERUND_EXPRESSION'}
+];

@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===29))return;u.push({id:29,part:2,chapter:2,unit:3,chapterLabel:'CH 2 · UNIT 3',focus:'동명사 관용적 표현 (2) · to + ~ing',itemCount:window.unit29Items.length||5,start:startUnit29,runKey:'unit29Runs'});})();

@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===27))return;u.push({id:27,part:2,chapter:2,unit:1,chapterLabel:'CH 2 · UNIT 1',focus:'동명사를 목적어로 취하는 타동사',itemCount:window.unit27Items.length||5,start:startUnit27,runKey:'unit27Runs'});})();
