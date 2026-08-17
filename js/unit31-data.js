@@ -1,0 +1,7 @@
+window.JK_UNIT31_ITEMS=[
+{id:'u31-q1-yesterday-finished',prompt:'I ___ the report yesterday.',choices:['finished','have finished'],answer:'finished',timeSignalAnswer:'finished-past',tenseAnswer:'past',rule:'yesterday처럼 끝난 과거 시점이 명확하면 현재완료가 아니라 과거 시제를 쓴다.',errorCode:'U31_USED_PRESENT_PERFECT_WITH_FINISHED_PAST_TIME'},
+{id:'u31-q2-for-three-years',prompt:'She ___ in Seoul for three years.',choices:['has lived','lived'],answer:'has lived',timeSignalAnswer:'continuing-period',tenseAnswer:'present-perfect',rule:'과거부터 현재까지 이어지는 기간을 나타내면 현재완료를 쓴다.',errorCode:'U31_USED_SIMPLE_PAST_FOR_CONTINUING_PERIOD'},
+{id:'u31-q3-since-2022',prompt:'They ___ each other since 2022.',choices:['have known','knew'],answer:'have known',timeSignalAnswer:'since-start',tenseAnswer:'present-perfect',rule:'since + 시작 시점은 과거부터 현재까지의 지속을 나타내므로 현재완료를 쓴다.',errorCode:'U31_USED_SIMPLE_PAST_WITH_SINCE'},
+{id:'u31-q4-before-he-arrived',prompt:'The train ___ before we arrived at the station.',choices:['had left','left'],answer:'had left',timeSignalAnswer:'earlier-than-past',tenseAnswer:'past-perfect',rule:'두 과거 사건 중 더 먼저 일어난 사건은 과거완료 had p.p.로 나타낸다.',errorCode:'U31_USED_SIMPLE_PAST_FOR_EARLIER_PAST'},
+{id:'u31-q5-by-the-time',prompt:'By the time the meeting started, the manager ___ the final decision.',choices:['had made','made'],answer:'had made',timeSignalAnswer:'earlier-than-past',tenseAnswer:'past-perfect',rule:'기준이 되는 과거 시점보다 먼저 완료된 사건은 과거완료를 쓴다.',errorCode:'U31_USED_SIMPLE_PAST_FOR_EARLIER_PAST'}
+];
