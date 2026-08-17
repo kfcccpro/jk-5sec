@@ -29,7 +29,7 @@ try{
   const captured=await ev(c,`(()=>{session=freshSession();session.firstAnswerCorrect=false;session.itemResults=[{id:JK_UNIT1_ITEMS[0].id,status:'REPAIRED'}];saveStore();return Object.values(JK_WRONGBOOK.read().items)[0]||null})()`);
   if(!captured||captured.runtimeId!==1||captured.page!=='18'||captured.status!=='review_due')throw new Error('automatic wrong capture failed '+JSON.stringify(captured));
   await ev(c,"JKCommonShell.units.find(x=>x.id===2).start();true");
-  await wait(c,"window.unit2Session && !document.body.innerText.includes('이전 오답 복구')",'same chapter bypass');
+  await wait(c,"document.body.innerText.includes('PART 1 · CH 1 · UNIT 2') && !document.body.innerText.includes('이전 오답 복구')",'same chapter bypass');
   await ev(c,"JKCommonShell.units.find(x=>x.id===8).start();true");
   await wait(c,"document.body.innerText.includes('이전 오답 복구') && document.querySelector('#jkWrongSubmit')",'later chapter gate');
   const gate=await ev(c,`(()=>({text:document.body.innerText,choices:[...document.querySelectorAll('#jkWrongChoices .choice')].map(x=>x.innerText)}))()`);
@@ -40,7 +40,7 @@ try{
   await ev(c,"document.querySelector('#jkBookRetry').click();true");await wait(c,"document.querySelector('#jkWrongSubmit')",'retry question');
   await ev(c,`(()=>{const a=JK_UNIT1_ITEMS[0].answer;const b=[...document.querySelectorAll('#jkWrongChoices .choice')].find(x=>x.innerText===a);b.click();document.querySelector('#jkWrongSubmit').click();return true})()`);
   await wait(c,"document.querySelector('#jkWrongNext')",'recovered');
-  await ev(c,"document.querySelector('#jkWrongNext').click();true");await wait(c,"window.unit8Session && document.body.innerText.includes('PART 1 · CH 2 · UNIT 1')",'target starts');
+  await ev(c,"document.querySelector('#jkWrongNext').click();true");await wait(c,"document.body.innerText.includes('PART 1 · CH 2 · UNIT 1') && !document.body.innerText.includes('이전 오답 복구')",'target starts');
   const recovered=await ev(c,`Object.values(JK_WRONGBOOK.read().items)[0]`);
   if(recovered.status!=='recovered'||recovered.reviewWrongCount<1||recovered.reviewCorrectCount<1)throw new Error('recovery state failed '+JSON.stringify(recovered));
   console.log(JSON.stringify({pass:true,baseline,captured:{runtimeId:captured.runtimeId,page:captured.page,status:captured.status},gate:{choiceCount:gate.choices.length},book:{hasRule:book.hasRule,has3800:book.has3800,ref:book.text.match(/JK 교재[^\n]*/)?.[0]||''},recovered:{runtimeId:recovered.runtimeId,page:recovered.page,status:recovered.status,reviewWrongCount:recovered.reviewWrongCount,reviewCorrectCount:recovered.reviewCorrectCount}},null,2));
