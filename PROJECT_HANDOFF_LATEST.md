@@ -12,29 +12,39 @@
 ## 1. Current baseline
 - Repository: `kfcccpro/jk-5sec`
 - Source family: JK `답이 보이는 5초 영어어법`
-- Version: `0.38.0`
-- Runtime lessons: 26
-- Derived items: 130
-- Content contract: `3.3.0`
+- Version: `0.41.0`
+- Runtime lessons: 29
+- Derived items: 145
+- Content contract: `3.4.0`
 - HTML/CSS/Vanilla JS + localStorage + GitHub Pages
 - 학생 PIN 8081 / 관리자 PIN 2007
 
-## 2. Latest completed phase
-### Phase 38 — PART 2 / CHAPTER 1 / UNIT 10
-`to부정사의 시제`
+## 2. Latest completed phases
+### Phase 39 — PART 2 / CHAPTER 2 / UNIT 1
+`동명사를 취하는 타동사`
+- Source: JK textbook p.50
+- Runtime 27
+- 판단 순서: 동사 확인 → 동명사 목적어 동사인지 판단 → `~ing`
 
-Source: JK textbook p.49.
-Author-rule conversion:
-- to부정사 사건이 본동사와 같은 시점 → `to-V`
-- to부정사 사건이 본동사보다 먼저 → `to have p.p.`
+### Phase 40 — PART 2 / CHAPTER 2 / UNIT 2
+`동명사 관용적 표현 (1)`
+- Source: JK textbook p.50
+- Runtime 28
+- 판단 순서: 관용표현 덩어리 확인 → 뒤에 `~ing`
 
-Runtime mapping: runtime 26 = P2 / CH1 / U10.
+### Phase 41 — PART 2 / CHAPTER 2 / UNIT 3
+`동명사 관용적 표현 (2) - to + ~ing`
+- Source: JK textbook p.51
+- Runtime 29
+- 판단 순서: `to`의 역할 확인 → 전치사이면 `~ing`
 
 ## 3. Implemented JK source boundary
-현재 runtime 1~26은 `data/jk-source-map.js`에서 JK 교재의 PART/CHAPTER/UNIT/페이지와 연결한다.
+현재 runtime 1~29는 `data/jk-source-map.js`에서 JK 교재의 PART/CHAPTER/UNIT/페이지와 연결한다.
 - PART 1 implemented range: p.18~40-41
 - PART 2 CH1 implemented range: p.44~49
-- 3800제의 `PSS`, `PRACTICE`, 3800 페이지 체계는 이 프로젝트의 출처로 사용하지 않는다.
+- PART 2 CH2 implemented range: p.50~51
+- Runtime 27/28/29 source pages: p.50 / p.50 / p.51
+- 3800제의 `PSS`, `PRACTICE`, 3800 페이지 체계는 이 프로젝트의 출처로 사용하지 않으며 CI에서 차단한다.
 
 ## 4. Architecture rules
 - Public GitHub에는 JK 교재 원문 전체를 저장하지 않고 파생문항만 저장한다.
@@ -43,22 +53,30 @@ Runtime mapping: runtime 26 = P2 / CH1 / U10.
 - Shell/index/contract integration은 semantic CI가 검증한다.
 - 교재 출처는 `JK_SOURCE_MAP`만 사용하며 다른 교재 좌표를 혼합하지 않는다.
 
-## 5. Wrong-answer recovery direction
-오답은 `jk5sec_wrongbook_v1`에 별도 저장한다.
+## 5. Wrong-answer recovery
+오답 게이트는 `main`에 승격되어 있다.
+- localStorage key: `jk5sec_wrongbook_v1`
 - 최초 오답이 발생하면 runtime/item ID와 JK 교재 좌표를 저장
-- 이후 더 뒤의 runtime 학습을 시작하기 전에 이전 미해결 오답을 먼저 회수
+- 같은 Chapter 안의 UNIT 이동에는 불필요한 게이트를 걸지 않음
+- 이후 더 뒤의 Chapter를 시작하기 전에 이전 미해결 오답을 먼저 회수
 - 복습에서 다시 틀리면 정답/해설을 노출하지 않고 JK 교재 페이지/PART/CHAPTER/UNIT만 표시
 - `책 확인 완료 · 다시 풀기` 후 같은 문제 재도전
 - 맞힌 기록도 삭제하지 않고 recovered 상태로 보존
 
-## 6. Still pending
-- 새 wrong-answer gate 브라우저 회귀검증 및 main 승격
+## 6. Validation baseline
+- JavaScript syntax
+- semantic content/source-integrity CI
+- 29 runtime / 145 derived item validation
+- browser wrong-answer recovery regression
+- GitHub Pages deployment
+
+## 7. Still pending
 - Phase 13B physical-device visual confirmation
 - Phase 14B live interaction regression confirmation
 
-## 7. Next content phase
-### Phase 39 — PART 2 / CHAPTER 2 / UNIT 1
-`동명사를 취하는 타동사`
-Source start: JK textbook p.50.
+## 8. Next content phase
+### Phase 42 — PART 3 / UNIT 1
+`현재 시제 / 과거 시제`
+Source start: JK textbook p.54.
 
 새 대화에서는 3800 저장소를 기준으로 복구하지 않는다. `kfcccpro/jk-5sec`의 최신 main을 기준으로 이어간다.
