@@ -26,3 +26,13 @@ jobs:
           done < <(find js data scripts -type f -name '*.js' -print0)
       - name: JK content and source integrity
         run: node scripts/validate-content-contract.js
+      - name: Start static server
+        run: |
+          nohup python3 -m http.server 4173 >/tmp/jk-http.log 2>&1 &
+          echo $! > /tmp/jk-http.pid
+          sleep 2
+      - name: Wrongbook browser regression
+        run: node scripts/wrongbook-browser-audit.mjs
+      - name: Stop static server
+        if: always()
+        run: kill $(cat /tmp/jk-http.pid) || true
