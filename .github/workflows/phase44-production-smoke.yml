@@ -1,0 +1,36 @@
+name: JK Phase 44 Production Smoke
+
+on:
+  push:
+    branches: ["work/phase44-production-smoke"]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Wait for Pages 0.44.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 18); do
+            version=$(curl -fsSL "https://kfcccpro.github.io/jk-5sec/VERSION?ts=$(date +%s)" 2>/dev/null | tr -d '\r\n' || true)
+            if [ "$version" = "0.44.0" ]; then
+              echo "Production VERSION=$version"
+              exit 0
+            fi
+            echo "Waiting for 0.44.0; current=${version:-unavailable}"
+            sleep 5
+          done
+          echo "Production did not reach VERSION 0.44.0"
+          exit 1
+      - name: JavaScript syntax
+        run: node --check scripts/wrongbook-browser-audit.mjs
+      - name: Production Phase 44 regression
+        run: LOCAL_URL=https://kfcccpro.github.io/jk-5sec timeout 45s node scripts/wrongbook-browser-audit.mjs
