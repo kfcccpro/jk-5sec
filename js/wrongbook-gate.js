@@ -16,6 +16,7 @@
   function sourceFor(runtimeId){return sourceMap[Number(runtimeId)]||null;}
   function itemGlobal(runtimeId){return window[`JK_UNIT${runtimeId}_ITEMS`]||window[`unit${runtimeId}Items`]||[];}
   function itemKey(runtimeId,item){return `${runtimeId}:${item.id}`;}
+  function chapterOrder(source){return Number(source?.part||0)*100+Number(source?.chapter||0);}
   function recordWrong(runtimeId,item){
     const source=sourceFor(runtimeId);if(!source||!item?.id)return;
     const book=read(),key=itemKey(runtimeId,item),rec=book.items[key]||{key,runtimeId:Number(runtimeId),itemId:item.id,firstWrongAt:now(),wrongCount:0,reviewWrongCount:0,reviewCorrectCount:0,status:'review_due'};
@@ -25,7 +26,14 @@
   function markReviewWrong(rec){const book=read(),x=book.items[rec.key]||rec;x.reviewWrongCount=(x.reviewWrongCount||0)+1;x.lastWrongAt=now();x.status='book_required';book.items[x.key]=x;write(book);return x;}
   function markRecovered(rec){const book=read(),x=book.items[rec.key]||rec;x.reviewCorrectCount=(x.reviewCorrectCount||0)+1;x.lastReviewAt=now();x.status='recovered';book.items[x.key]=x;write(book);return x;}
   function resolve(rec){const list=itemGlobal(rec.runtimeId);const item=list.find(x=>x.id===rec.itemId);return item?{...rec,item}:null;}
-  function queueBefore(runtimeId){return Object.values(read().items).filter(r=>['review_due','book_required'].includes(r.status)&&Number(r.runtimeId)<Number(runtimeId)).map(resolve).filter(Boolean).sort((a,b)=>Number(b.status==='book_required')-Number(a.status==='book_required')||String(a.firstWrongAt).localeCompare(String(b.firstWrongAt)));}
+  function queueBefore(runtimeId){
+    const target=sourceFor(runtimeId),targetOrder=chapterOrder(target);
+    if(!targetOrder)return [];
+    return Object.values(read().items)
+      .filter(r=>['review_due','book_required'].includes(r.status)&&chapterOrder(r)<targetOrder)
+      .map(resolve).filter(Boolean)
+      .sort((a,b)=>Number(b.status==='book_required')-Number(a.status==='book_required')||String(a.firstWrongAt).localeCompare(String(b.firstWrongAt)));
+  }
   function ref(rec){const u=rec.unit?` · UNIT ${rec.unit}`:'';return `JK 교재 p.${rec.page} · PART ${rec.part} · CH ${rec.chapter}${u}`;}
 
   let gate=null;
