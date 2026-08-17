@@ -1,0 +1,23 @@
+name: JK Phase 41 Production Smoke
+
+on:
+  push:
+    branches: ["work/phase41-production-smoke"]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: JavaScript syntax
+        run: node --check scripts/wrongbook-browser-audit.mjs
+      - name: Production Phase 41 regression
+        env:
+          LOCAL_URL: https://kfcccpro.github.io/jk-5sec
+        run: timeout 60s node scripts/wrongbook-browser-audit.mjs
