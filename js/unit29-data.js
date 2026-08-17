@@ -1,0 +1,7 @@
+window.JK_UNIT29_ITEMS=[
+{id:'u29-q1-look-forward-meeting',prompt:'I look forward to ___ you again.',choices:['meeting','meet'],answer:'meeting',toRoleAnswer:'preposition',formAnswer:'~ing',rule:'look forward to의 to는 전치사이므로 뒤에는 동명사 ~ing가 온다.',errorCode:'U29_TREATED_PREPOSITION_TO_AS_INFINITIVE'},
+{id:'u29-q2-object-paying',prompt:'They objected to ___ the extra fee.',choices:['paying','pay'],answer:'paying',toRoleAnswer:'preposition',formAnswer:'~ing',rule:'object to의 to는 전치사이므로 뒤에는 명사 역할의 동명사가 온다.',errorCode:'U29_TREATED_PREPOSITION_TO_AS_INFINITIVE'},
+{id:'u29-q3-contribute-reducing',prompt:'This change contributed to ___ costs.',choices:['reducing','reduce'],answer:'reducing',toRoleAnswer:'preposition',formAnswer:'~ing',rule:'contribute to 뒤의 to는 전치사이므로 ~ing를 연결한다.',errorCode:'U29_TREATED_PREPOSITION_TO_AS_INFINITIVE'},
+{id:'u29-q4-opposed-building',prompt:'Residents are opposed to ___ a factory here.',choices:['building','build'],answer:'building',toRoleAnswer:'preposition',formAnswer:'~ing',rule:'be opposed to에서 to는 전치사이므로 뒤에는 동명사가 온다.',errorCode:'U29_TREATED_PREPOSITION_TO_AS_INFINITIVE'},
+{id:'u29-q5-comes-to-solving',prompt:'When it comes to ___ this problem, she is very creative.',choices:['solving','solve'],answer:'solving',toRoleAnswer:'preposition',formAnswer:'~ing',rule:'when it comes to의 to는 전치사이므로 뒤에는 ~ing를 쓴다.',errorCode:'U29_TREATED_PREPOSITION_TO_AS_INFINITIVE'}
+];
