@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===28))return;u.push({id:28,part:2,chapter:2,unit:2,chapterLabel:'CH 2 · UNIT 2',focus:'동명사 관용적 표현 (1)',itemCount:window.unit28Items.length||5,start:startUnit28,runKey:'unit28Runs'});})();
