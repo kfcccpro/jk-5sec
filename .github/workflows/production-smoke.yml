@@ -1,0 +1,23 @@
+name: JK Production Smoke
+
+on:
+  push:
+    branches: ["work/jk-production-smoke"]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax
+        run: node --check scripts/wrongbook-browser-audit.mjs
+      - name: Production JK wrongbook regression
+        env:
+          LOCAL_URL: https://kfcccpro.github.io/jk-5sec
+        run: timeout 60s node scripts/wrongbook-browser-audit.mjs
