@@ -34,7 +34,7 @@
       .map(resolve).filter(Boolean)
       .sort((a,b)=>Number(b.status==='book_required')-Number(a.status==='book_required')||String(a.firstWrongAt).localeCompare(String(b.firstWrongAt)));
   }
-  function ref(rec){const u=rec.unit?` · UNIT ${rec.unit}`:'';return `JK 교재 p.${rec.page} · PART ${rec.part} · CH ${rec.chapter}${u}`;}
+  function ref(rec){const c=Number(rec.chapter)>0?` · CH ${rec.chapter}`:'';const u=rec.unit?` · UNIT ${rec.unit}`:'';return `JK 교재 p.${rec.page} · PART ${rec.part}${c}${u}`;}
 
   let gate=null;
   function renderQuestion(){
@@ -65,6 +65,6 @@
     }catch{}
     return baseSave();
   };
-  window.JK_WRONGBOOK={read,queueBefore,recordWrong,sourceFor};
+  window.JK_WRONGBOOK={read,queueBefore,recordWrong,sourceFor,formatRef:ref};
   window.JK_WRONGBOOK_READY=true;
 })();
