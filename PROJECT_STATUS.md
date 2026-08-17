@@ -1,50 +1,56 @@
 # JK 5SEC Grammar — PROJECT STATUS
 
 ## Current version
-`v0.33.0-phase33-p2-ch1-unit5`
+`v0.38.0-phase38-p2-ch1-unit10`
 
 ## Source of truth
 - Repository: `kfcccpro/jk-5sec`
 - Branch: `main`
+- Source family: JK `답이 보이는 5초 영어어법`
 - General app: `https://kfcccpro.github.io/jk-5sec/`
 - Review mode: `https://kfcccpro.github.io/jk-5sec/?review=1`
 
 ## Completed
-- Phase 1~32: baseline through PART 2 / CHAPTER 1 / UNIT 4
-- Phase 33: PART 2 / CHAPTER 1 / UNIT 5 `의미상의 주어`
+- Phase 1~38
+- Runtime lessons: 26
+- Five derived items per runtime
+- Total: 130 derived items
+- Content contract: `3.3.0`
 
-## Current learning content
-- Runtime lessons: 21
-- Five derived items per lesson
-- Total: 105 derived items
-- Public repository source policy remains reference-only.
+## Current learning coverage
+### PART 1
+- CH 1 UNIT 1~7
+- CH 2 UNIT 1~4
+- CH 3 UNIT 1~2
+- CH 4 UNIT 1~2
+- CH 5
 
-### Phase 33 loop
-`Cold Attempt → 형용사 확인 → 사람의 성질·태도 평가 여부 → of/for 의미상 주어 → 5초 Rule → 재도전`
+### PART 2
+- CH 1 UNIT 1~10
+- Latest: UNIT 10 `to부정사의 시제`
 
-## Runtime mapping added
-- runtime 21 = P2 / CH1 / U5
+## Source integrity
+`data/jk-source-map.js` is the runtime source authority.
+- Runtime 1~16: JK textbook p.18~40-41
+- Runtime 17~26: JK textbook p.44~49
+- Runtime 23 `way to-V`: p.47
+- 3800/PSS/PRACTICE source coordinates are not valid in this repository.
 
-## Content contract
-`data/content-contract.js` version `2.8.0`
+## Wrong-answer recovery
+Work branch `work/jk-recovery-wrongbook` adds a JK-native persistent wrong-answer gate.
+- localStorage key: `jk5sec_wrongbook_v1`
+- first wrong answer is retained
+- prior unresolved items are presented before a later runtime starts
+- repeat wrong answer reveals no answer/explanation
+- learner is sent to the exact JK textbook page/PART/CHAPTER/UNIT and must retry
+- successful recovery is preserved as history rather than deletion
 
-Semantic CI target is now 105 items across 21 implemented lessons and verifies source boundary, item schema, runtime ID prefix, answer/choices consistency, common Shell registry/start/adapters, and index loading.
+## Still pending before promotion
+- syntax/content/source-integrity CI
+- browser wrongbook flow regression
+- merge to main only after green verification
 
-## Key distinction preserved
-- 사람의 성질·태도를 평가하는 형용사: `of + 목적격`
-- 일반 조건·상황·난이도 등을 나타내는 형용사: `for + 목적격`
-
-## Still pending, non-blocking
-- Phase 13B: physical-device visual confirmation
-- Phase 14B: live interaction regression confirmation
-
-## Next implementation phase
-### Phase 34 — PART 2 / CHAPTER 1 / UNIT 6
-Topic: `to부정사의 부정`
-
-1. inspect textbook author rule in the next source unit
-2. define UNIT-specific decision contract
-3. create five derived practice items
-4. implement runtime lesson 22
-5. register common Shell/index/content contract
-6. pass syntax + semantic + integration CI
+## Next content phase
+### Phase 39 — PART 2 / CHAPTER 2 / UNIT 1
+Topic: `동명사를 취하는 타동사`
+Source start: JK textbook p.50.

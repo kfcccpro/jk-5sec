@@ -1,1 +1,4 @@
-(()=>{const cfg={unitNo:23,items:window.JK_UNIT23_ITEMS,badge:'PART 2 · CH 1 · UNIT 7',labels:{cold:'5초 판단',repair:'판단 교정',retry:'원문 재도전'},focus:'way 뒤 구조를 먼저 본다 → 직접 동작이면 to-V / of 뒤면 ~ing',runKey:'unit23Runs'};window.JKGenericDecisionEngine.attach(cfg);})();
+JK_createDecisionUnit({runtimeId:23,itemsGlobal:'JK_UNIT23_ITEMS',badge:'PART 2 · CH 1 · UNIT 7',shortLabel:'PART 2 · CH 1 · UNIT 7',answerTitle:'way 뒤에 이어질 올바른 형태를 고르세요.',ruleHeadline:'way 확인 → 직접 동작이면 to-V / of 뒤면 ~ing',stableText:'way 뒤 구조를 먼저 보고 to-V와 of + ~ing를 안정적으로 구별했습니다.',repairText:'way 바로 뒤에 ~ing를 붙이지 말고, 직접 동작이면 to-V, 동명사이면 of + ~ing 구조인지 확인합니다.',steps:[
+{key:'targetNoun',label:'핵심 명사 확인',title:'판단의 기준이 되는 핵심 명사는 무엇입니까?',targetField:'targetNoun',options:[{value:'way',label:'way'},{value:'verb',label:'앞 동사'}]},
+{key:'structure',label:'구조 판단',title:'way 뒤의 구조는 무엇입니까?',targetField:'structureAnswer',last:true,options:[{value:'way + to-V',label:'way + to-V'},{value:'way + of + ~ing',label:'way + of + ~ing'},{value:'way + ~ing',label:'way + ~ing'}]}
+]});
