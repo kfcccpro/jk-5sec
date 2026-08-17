@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===25))return;u.push({id:25,part:2,chapter:1,unit:9,chapterLabel:'CH 1 · UNIT 9',focus:'It takes + 시간·노력·돈 + to-V',itemCount:window.unit25Items.length||5,start:startUnit25,runKey:'unit25Runs'});})();
