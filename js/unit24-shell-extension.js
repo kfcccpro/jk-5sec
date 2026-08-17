@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===24))return;u.push({id:24,part:2,chapter:1,unit:8,chapterLabel:'CH 1 · UNIT 8',focus:'to부정사 · 동명사 의미 구별',itemCount:window.unit24Items.length||5,start:startUnit24,runKey:'unit24Runs'});})();
