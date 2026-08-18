@@ -1,0 +1,7 @@
+window.JK_UNIT34_ITEMS=[
+{id:'u34-q1-most-students-are',prompt:'Most of the students ___ ready for the test.',choices:['are','is'],answer:'are',ofNounAnswer:'plural',numberAnswer:'plural',rule:'부분사 + of + 명사에서는 of 뒤 명사의 수에 맞춰 동사를 고른다. students가 복수이므로 복수동사.',errorCode:'U34_IGNORED_PLURAL_OF_NOUN'},
+{id:'u34-q2-half-water-is',prompt:'Half of the water ___ gone.',choices:['is','are'],answer:'is',ofNounAnswer:'singular',numberAnswer:'singular',rule:'water는 셀 수 없는 단수 취급 명사이므로 half of the water 뒤에는 단수동사를 쓴다.',errorCode:'U34_IGNORED_SINGULAR_OF_NOUN'},
+{id:'u34-q3-percent-books-were',prompt:'Seventy percent of the books ___ sold yesterday.',choices:['were','was'],answer:'were',ofNounAnswer:'plural',numberAnswer:'plural',rule:'percent of 뒤의 books가 복수이므로 복수동사를 쓴다.',errorCode:'U34_IGNORED_PLURAL_OF_NOUN'},
+{id:'u34-q4-some-information-is',prompt:'Some of the information ___ incorrect.',choices:['is','are'],answer:'is',ofNounAnswer:'singular',numberAnswer:'singular',rule:'information은 불가산명사로 단수 취급하므로 some of the information 뒤에는 단수동사가 온다.',errorCode:'U34_IGNORED_SINGULAR_OF_NOUN'},
+{id:'u34-q5-third-apples-are',prompt:'A third of the apples ___ damaged.',choices:['are','is'],answer:'are',ofNounAnswer:'plural',numberAnswer:'plural',rule:'분수 표현도 of 뒤 명사의 수를 따른다. apples가 복수이므로 복수동사를 쓴다.',errorCode:'U34_IGNORED_PLURAL_OF_NOUN'}
+];
