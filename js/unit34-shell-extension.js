@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===34))return;u.push({id:34,part:4,chapter:0,unit:2,chapterLabel:'UNIT 2',focus:'부분사 + of + 명사 · of 뒤 명사에 수 일치',itemCount:window.unit34Items.length||5,start:startUnit34,runKey:'unit34Runs'});})();
