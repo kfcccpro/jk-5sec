@@ -3,6 +3,8 @@ name: JK Phase 47 Production Smoke
 on:
   push:
     branches: ["work/phase47-production-smoke"]
+  pull_request:
+    branches: ["main"]
 
 permissions:
   contents: read
