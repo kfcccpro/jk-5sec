@@ -1,0 +1,7 @@
+window.JK_UNIT36_ITEMS=[
+{id:'u36-q1-number-students-is',prompt:'The number of students in this class ___ increasing.',choices:['is','are'],answer:'is',expressionAnswer:'the-number',numberAnswer:'singular',rule:'the number of + 복수명사는 ‘~의 수’가 주어이므로 단수동사를 쓴다.',errorCode:'U36_PLURAL_VERB_AFTER_THE_NUMBER_OF'},
+{id:'u36-q2-number-cases-has',prompt:'The number of reported cases ___ fallen this month.',choices:['has','have'],answer:'has',expressionAnswer:'the-number',numberAnswer:'singular',rule:'the number가 핵심 주어이므로 뒤의 복수명사 cases에 끌리지 않고 단수동사를 쓴다.',errorCode:'U36_PLURAL_VERB_AFTER_THE_NUMBER_OF'},
+{id:'u36-q3-a-number-students-are',prompt:'A number of students ___ waiting outside.',choices:['are','is'],answer:'are',expressionAnswer:'a-number',numberAnswer:'plural',rule:'a number of + 복수명사는 ‘많은 ~’의 뜻으로 복수 주어처럼 취급한다.',errorCode:'U36_SINGULAR_VERB_AFTER_A_NUMBER_OF'},
+{id:'u36-q4-a-number-books-have',prompt:'A number of useful books ___ been donated.',choices:['have','has'],answer:'have',expressionAnswer:'a-number',numberAnswer:'plural',rule:'a number of 뒤의 복수명사가 실제 여러 대상을 나타내므로 복수동사를 쓴다.',errorCode:'U36_SINGULAR_VERB_AFTER_A_NUMBER_OF'},
+{id:'u36-q5-number-visitors-was',prompt:'The number of visitors last year ___ much higher than expected.',choices:['was','were'],answer:'was',expressionAnswer:'the-number',numberAnswer:'singular',rule:'the number of는 뒤 명사가 복수여도 ‘그 수’ 하나를 말하므로 단수동사와 일치한다.',errorCode:'U36_PLURAL_VERB_AFTER_THE_NUMBER_OF'}
+];
