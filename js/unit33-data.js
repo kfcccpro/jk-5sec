@@ -1,0 +1,7 @@
+window.JK_UNIT33_ITEMS=[
+{id:'u33-q1-reading-is',prompt:'Reading before bed ___ a useful daily habit.',choices:['is','are'],answer:'is',subjectTypeAnswer:'gerund',numberAnswer:'singular',rule:'동명사구가 하나의 주어 역할을 하면 전체를 하나의 단위로 보고 단수동사를 쓴다.',errorCode:'U33_PLURAL_VERB_FOR_GERUND_SUBJECT'},
+{id:'u33-q2-to-exercise-is',prompt:'To exercise regularly ___ important for your health.',choices:['is','are'],answer:'is',subjectTypeAnswer:'infinitive',numberAnswer:'singular',rule:'to부정사구가 주어이면 하나의 행위·개념으로 보아 단수동사를 쓴다.',errorCode:'U33_PLURAL_VERB_FOR_INFINITIVE_SUBJECT'},
+{id:'u33-q3-what-he-said-was',prompt:'What he said at the meeting ___ surprising to everyone.',choices:['was','were'],answer:'was',subjectTypeAnswer:'noun-clause',numberAnswer:'singular',rule:'명사절 전체가 하나의 주어 역할을 하면 단수로 취급한다.',errorCode:'U33_PLURAL_VERB_FOR_NOUN_CLAUSE_SUBJECT'},
+{id:'u33-q4-whether-we-go-is',prompt:'Whether we go today or tomorrow ___ not important.',choices:['is','are'],answer:'is',subjectTypeAnswer:'noun-clause',numberAnswer:'singular',rule:'whether로 시작하는 명사절이 주어이면 절 전체를 하나의 내용으로 보고 단수동사를 쓴다.',errorCode:'U33_PLURAL_VERB_FOR_NOUN_CLAUSE_SUBJECT'},
+{id:'u33-q5-solving-takes',prompt:'Solving difficult problems ___ patience and practice.',choices:['takes','take'],answer:'takes',subjectTypeAnswer:'gerund',numberAnswer:'singular',rule:'동명사구 주어는 뒤에 복수명사가 포함되어도 전체가 하나의 행위이므로 단수동사를 쓴다.',errorCode:'U33_ATTRACTED_BY_PLURAL_NOUN_IN_SUBJECT_PHRASE'}
+];
