@@ -1,0 +1,7 @@
+window.JK_UNIT37_ITEMS=[
+{id:'u37-q1-either-teacher-students-are',prompt:'Either the teacher or the students ___ responsible for the display.',choices:['are','is'],answer:'are',patternAnswer:'near-subject',controllerAnswer:'plural',rule:'either A or B는 동사에 가까운 B에 수를 일치시킨다. students가 가까우므로 복수동사.',errorCode:'U37_IGNORED_NEAREST_SUBJECT'},
+{id:'u37-q2-neither-students-teacher-is',prompt:'Neither the students nor the teacher ___ ready yet.',choices:['is','are'],answer:'is',patternAnswer:'near-subject',controllerAnswer:'singular',rule:'neither A nor B는 동사에 가까운 B를 기준으로 한다. teacher가 단수이므로 단수동사.',errorCode:'U37_IGNORED_NEAREST_SUBJECT'},
+{id:'u37-q3-not-only-manager-workers-are',prompt:'Not only the manager but also the workers ___ attending the meeting.',choices:['are','is'],answer:'are',patternAnswer:'near-subject',controllerAnswer:'plural',rule:'not only A but also B는 B가 동사에 가까우므로 B에 일치시킨다.',errorCode:'U37_IGNORED_NEAREST_SUBJECT'},
+{id:'u37-q4-professor-as-well-as-students-is',prompt:'The professor as well as the students ___ invited to speak.',choices:['is','are'],answer:'is',patternAnswer:'as-well-as',controllerAnswer:'singular',rule:'A as well as B는 예외적으로 앞의 A가 기준이다. professor가 단수이므로 단수동사.',errorCode:'U37_USED_NEAREST_SUBJECT_WITH_AS_WELL_AS'},
+{id:'u37-q5-both-plan-schedule-are',prompt:'Both the plan and the schedule ___ important.',choices:['are','is'],answer:'are',patternAnswer:'both-and',controllerAnswer:'plural',rule:'both A and B는 A와 B 둘 다 주어이므로 복수동사를 쓴다.',errorCode:'U37_SINGULAR_VERB_AFTER_BOTH_AND'}
+];
