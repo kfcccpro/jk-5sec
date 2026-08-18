@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===33))return;u.push({id:33,part:4,chapter:0,unit:1,chapterLabel:'UNIT 1',focus:'주어 · to부정사·동명사·명사절은 단수 취급',itemCount:window.unit33Items.length||5,start:startUnit33,runKey:'unit33Runs'});})();
