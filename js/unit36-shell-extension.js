@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===36))return;u.push({id:36,part:4,chapter:0,unit:4,chapterLabel:'UNIT 4',focus:'the number of는 단수 / a number of는 복수',itemCount:window.unit36Items.length||5,start:startUnit36,runKey:'unit36Runs'});})();
