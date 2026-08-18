@@ -1,0 +1,7 @@
+window.JK_UNIT35_ITEMS=[
+{id:'u35-q1-united-states-is',prompt:'The United States ___ a large country.',choices:['is','are'],answer:'is',categoryAnswer:'proper-name',numberAnswer:'singular',rule:'the United States처럼 복수 형태의 국가명은 하나의 국가를 가리키므로 단수 취급한다.',errorCode:'U35_PLURAL_VERB_FOR_SINGULAR_PROPER_NAME'},
+{id:'u35-q2-measles-is',prompt:'Measles ___ a contagious disease.',choices:['is','are'],answer:'is',categoryAnswer:'disease',numberAnswer:'singular',rule:'measles처럼 -s 형태의 병명은 복수처럼 보여도 단수 취급한다.',errorCode:'U35_PLURAL_VERB_FOR_SINGULAR_DISEASE'},
+{id:'u35-q3-statistics-is',prompt:'Statistics ___ an important field of study.',choices:['is','are'],answer:'is',categoryAnswer:'academic-field',numberAnswer:'singular',rule:'statistics가 학문명인 통계학을 뜻하면 단수 취급한다.',errorCode:'U35_PLURAL_VERB_FOR_ACADEMIC_FIELD'},
+{id:'u35-q4-statistics-are',prompt:'The statistics in this report ___ inaccurate.',choices:['are','is'],answer:'are',categoryAnswer:'data',numberAnswer:'plural',rule:'statistics가 통계자료·수치들을 뜻하면 복수 취급한다.',errorCode:'U35_SINGULAR_VERB_FOR_STATISTICAL_DATA'},
+{id:'u35-q5-news-is',prompt:'The news ___ encouraging today.',choices:['is','are'],answer:'is',categoryAnswer:'news',numberAnswer:'singular',rule:'news는 -s로 끝나지만 하나의 소식·뉴스를 뜻하는 단수 취급 명사이다.',errorCode:'U35_PLURAL_VERB_FOR_NEWS'}
+];
