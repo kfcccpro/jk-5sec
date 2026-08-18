@@ -1,0 +1,1 @@
+(()=>{const u=window.JKCommonShell?.units;if(!Array.isArray(u)||u.some(x=>x.id===37))return;u.push({id:37,part:4,chapter:0,unit:5,chapterLabel:'UNIT 5',focus:'상관접속사 주어 · 가까운 주어 / as well as 예외 / both 복수',itemCount:window.unit37Items.length||5,start:startUnit37,runKey:'unit37Runs'});})();
